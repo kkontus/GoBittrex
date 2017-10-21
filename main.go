@@ -1,14 +1,13 @@
 package main
 
 import (
-    "fmt"
-    btrexhttp "GoBittrex/http"
+	"fmt"
+	gbtHttp "GoBittrex/http"
 )
 
 func main() {
-    fmt.Printf("Hello Bittrex\n")
+	fmt.Printf("Hello Bittrex\n")
 
-    // btrexhttp.ExportedMethod()
-    // btrexhttp.GetGolangData()
-    btrexhttp.GetGolangDataJson()
+	//gbtHttp.GetGolangData("https://bittrex.com/api/v1.1/public/getmarkets")
+	gbtHttp.GetGolangDataJson("https://bittrex.com/api/v1.1/public/getmarkets")
 }
