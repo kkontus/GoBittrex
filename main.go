@@ -8,7 +8,7 @@ import (
 func main() {
     fmt.Printf("Hello Bittrex\n")
 
-    // btrexhttp.ExportedMethod();
-    // btrexhttp.GetGolangData();
-    btrexhttp.GetGolangDataJson();
+    // btrexhttp.ExportedMethod()
+    // btrexhttp.GetGolangData()
+    btrexhttp.GetGolangDataJson()
 }
