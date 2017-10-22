@@ -1,7 +1,6 @@
 package entity
 
-type Response struct {
-	Success bool              `json:"success"`
-	Message string            `json:"message"`
-	Result  []BittrexResponse `json:"result"`
+type ResponseGeneric struct {
+	Success bool   `json:"success"`
+	Message string `json:"message"`
 }

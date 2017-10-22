@@ -1,6 +1,6 @@
 package entity
 
-type BittrexResponse struct {
+type Markets struct {
 	MarketCurrency     string  `json:"MarketCurrency"`
 	BaseCurrency       string  `json:"BaseCurrency"`
 	MarketCurrencyLong string  `json:"MarketCurrencyLong"`

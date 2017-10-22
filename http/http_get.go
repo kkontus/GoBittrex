@@ -19,53 +19,74 @@ func JsonPrettyPrint(in string) string {
 	return out.String()
 }
 
-func GetGolangData(url string) {
+func showError(err error) {
+	fmt.Printf("%s", "Error message: ")
+	fmt.Printf("%s\n", err)
+	os.Exit(1)
+}
+
+func jsonDecode(url string) (error, *json.Decoder, *http.Response) {
 	response, err := http.Get(url)
 	if err != nil {
-		fmt.Printf("%s", "Error message: ")
-		fmt.Printf("%s\n", err)
-		os.Exit(1)
+		showError(err)
+	}
+
+	decoder := json.NewDecoder(response.Body)
+	return err, decoder, response
+}
+
+func GetData(url string) {
+	response, err := http.Get(url)
+	if err != nil {
+		showError(err)
 	} else {
 		defer response.Body.Close()
 
 		contents, err := ioutil.ReadAll(response.Body)
 		if err != nil {
-			fmt.Printf("%s", err)
-			os.Exit(1)
+			showError(err)
 		}
 
 		fmt.Printf("%s\n", JsonPrettyPrint(string(contents)))
 	}
 }
 
-func GetGolangDataJson(url string) {
-	response, err := http.Get(url)
+func GetMarketsDataJson(url string) {
+	err, decoder, response := jsonDecode(url)
+	defer response.Body.Close()
+	getMarkets(err, decoder)
+}
+
+func GetCurrenciesDataJson(url string) {
+	err, decoder, response := jsonDecode(url)
+	defer response.Body.Close()
+	getCurrencies(err, decoder)
+}
+
+func getMarkets(err error, decoder *json.Decoder) {
+	responseData := gbtEntity.MarketsResponse{} // or var responseData = gbtEntity.MarketsResponse{}
+	err = decoder.Decode(&responseData)
 	if err != nil {
-		fmt.Printf("%s", "Error message: ")
-		fmt.Printf("%s\n", err)
-		os.Exit(1)
+		showError(err)
 	} else {
-		defer response.Body.Close()
+		//fmt.Printf("Result: %v\n", responseData.Result)
+		result := responseData.Result
+		for i, elem := range result {
+			fmt.Printf("%d: %s %s\n", i, elem.MarketCurrency, elem.MarketName)
+		}
+	}
+}
 
-		responseData := gbtEntity.Response{} // or var responseData = Response{}
-
-		err = json.NewDecoder(response.Body).Decode(&responseData)
-		if err != nil {
-			fmt.Printf("%s", "Error message: ")
-			fmt.Printf("%s\n", err)
-			os.Exit(1)
-		} else {
-			// fmt.Printf("Results: %v\n", responseData)
-			// fmt.Printf("Results: %v\n", responseData.Success)
-			// fmt.Printf("Results: %v\n", responseData.Message)
-			// fmt.Printf("Results: %v\n", responseData.Result)
-
-			result := responseData.Result
-			// fmt.Printf("Results: %v\n", result)
-
-			for i, elem := range result {
-				fmt.Printf("%d: %s %s\n", i, elem.MarketCurrency, elem.MarketName)
-			}
+func getCurrencies(err error, decoder *json.Decoder) {
+	responseData := gbtEntity.CurrenciesResponse{} // or var responseData = gbtEntity.CurrenciesResponse{}
+	err = decoder.Decode(&responseData)
+	if err != nil {
+		showError(err)
+	} else {
+		//fmt.Printf("Result: %v\n", responseData.Result)
+		result := responseData.Result
+		for i, elem := range result {
+			fmt.Printf("%d: %s %f\n", i, elem.Currency, elem.TxFee)
 		}
 	}
 }
