@@ -63,6 +63,12 @@ func GetCurrenciesDataJson(url string) {
 	getCurrencies(err, decoder)
 }
 
+func GetTicksDataJson(url string) {
+	err, decoder, response := jsonDecode(url)
+	defer response.Body.Close()
+	getTicksData(err, decoder)
+}
+
 func getMarkets(err error, decoder *json.Decoder) {
 	responseData := gbtEntity.MarketsResponse{} // or var responseData = gbtEntity.MarketsResponse{}
 	err = decoder.Decode(&responseData)
@@ -87,6 +93,20 @@ func getCurrencies(err error, decoder *json.Decoder) {
 		result := responseData.Result
 		for i, elem := range result {
 			fmt.Printf("%d: %s %f\n", i, elem.Currency, elem.TxFee)
+		}
+	}
+}
+
+func getTicksData(err error, decoder *json.Decoder) {
+	responseData := gbtEntity.TicksResponse{} // or var responseData = gbtEntity.CurrenciesResponse{}
+	err = decoder.Decode(&responseData)
+	if err != nil {
+		showError(err)
+	} else {
+		//fmt.Printf("Result: %v\n", responseData.Result)
+		result := responseData.Result
+		for i, elem := range result {
+			fmt.Printf("%d: %f %f\n", i, elem.Low, elem.High)
 		}
 	}
 }
