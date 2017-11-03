@@ -5,6 +5,7 @@ import (
 	"os"
 	gbtHttp "GoBittrex/http"
 	gbtUtil "GoBittrex/util"
+	gbtFalgo "GoBittrex/falgo"
 )
 
 const (
@@ -32,6 +33,13 @@ func main() {
 
 	fmt.Println(arg)
 	fmt.Println(coin)
+
+	// test data, we will take this from getTicks
+	l := []float64{50, 98, 93, 77, 82, 83}
+	h := []float64{115, 198, 193, 177, 182, 183}
+
+	avg := gbtFalgo.Average(l, h)
+	fmt.Println(avg)
 
 	status := selectBittrexEndpoint(arg, coin)
 	if !status {
