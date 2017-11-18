@@ -9,4 +9,5 @@ $ go build
 $ ./GoBittrex getMarkets
 $ ./GoBittrex getCurrencies
 $ ./GoBittrex getTicks <coin_symbol>
+$ ./GoBittrex getOpenOrders <coin_symbol>
 ```

@@ -6,16 +6,7 @@ import (
 	gbtHttp "GoBittrex/http"
 	gbtUtil "GoBittrex/util"
 	gbtFalgo "GoBittrex/falgo"
-)
-
-const (
-	API_BASE       = "https://bittrex.com/api/" // Bittrex API endpoint
-	API_VERSION    = "v1.1"
-	API_VERSION_V2 = "v2.0"
-	WS_BASE        = "socket.bittrex.com" // Bittrex WS API endpoint
-	WS_HUB         = "CoreHub"            // SignalR main hub
-	API_PATH       = API_BASE + API_VERSION
-	API_PATH_V2    = API_BASE + API_VERSION_V2
+	gbtConfig "GoBittrex/config"
 )
 
 func main() {
@@ -48,6 +39,7 @@ func main() {
 		fmt.Println("./GoBittrex getMarkets")
 		fmt.Println("./GoBittrex geCurrencies")
 		fmt.Println("./GoBittrex getTicks <coin_symbol>")
+		fmt.Println("./GoBittrex getOpenOrders <coin_symbol>")
 		fmt.Println("")
 	} else {
 		fmt.Println("Status: OK'")
@@ -58,22 +50,27 @@ func selectBittrexEndpoint(param string, coin string) bool {
 	status := false
 	switch param {
 	case "getMarkets":
-		//gbtHttp.GetData("https://bittrex.com/api/v1.1/public/getmarkets")
+		//gbtHttp.GetData("https://bittrex.com/api/v1.1/public/getmarkets", false)
 		//URL := API_PATH + "/public/getmarkets"
-		URL := fmt.Sprintf("%s/public/getmarkets", API_PATH)
-		gbtHttp.GetMarketsDataJson(URL)
+		URL := fmt.Sprintf("%s/public/getmarkets", gbtConfig.API_PATH)
+		gbtHttp.GetMarketsDataJson(URL, false)
 		status = true
 	case "getCurrencies":
-		//gbtHttp.GetData("https://bittrex.com/api/v1.1/public/getcurrencies")
+		//gbtHttp.GetData("https://bittrex.com/api/v1.1/public/getcurrencies", false)
 		//URL := API_PATH + "/public/getcurrencies"
-		URL := fmt.Sprintf("%s/public/getcurrencies", API_PATH)
-		gbtHttp.GetCurrenciesDataJson(URL)
+		URL := fmt.Sprintf("%s/public/getcurrencies", gbtConfig.API_PATH)
+		gbtHttp.GetCurrenciesDataJson(URL, false)
 		status = true
 	case "getTicks":
-		//gbtHttp.GetData(API_PATH_V2+"/pub/market/GetTicks?marketName=BTC-"+coin+"&tickInterval=day&_="+gbtUtil.FormatInt(gbtUtil.GetTimestamp()))
-		//URL := API_PATH_V2 + "/pub/market/GetTicks?marketName=BTC-" + coin + "&tickInterval=day&_=" + gbtUtil.FormatInt(gbtUtil.GetTimestamp())
-		URL := fmt.Sprintf("%s/pub/market/GetTicks?marketName=BTC-%s&tickInterval=day&_=%s", API_PATH_V2, coin, gbtUtil.FormatInt(gbtUtil.GetTimestamp()))
-		gbtHttp.GetTicksDataJson(URL)
+		//gbtHttp.GetData(gbtConfig.API_PATH_V2+"/pub/market/GetTicks?marketName=BTC-"+coin+"&tickInterval=day&_="+gbtUtil.FormatInt(gbtUtil.GetTimestamp()), false)
+		//URL := gbtConfig.API_PATH_V2 + "/pub/market/GetTicks?marketName=BTC-" + coin + "&tickInterval=day&_=" + gbtUtil.FormatInt(gbtUtil.GetTimestamp())
+		URL := fmt.Sprintf("%s/pub/market/GetTicks?marketName=BTC-%s&tickInterval=day&_=%s", gbtConfig.API_PATH_V2, coin, gbtUtil.FormatInt(gbtUtil.GetTimestamp()))
+		gbtHttp.GetTicksDataJson(URL, false)
+		status = true
+	case "getOpenOrders":
+		URL := fmt.Sprintf("%s/market/getopenorders?apikey=%s&market=BTC-%s", gbtConfig.API_PATH, gbtConfig.API_KEY, coin)
+		gbtHttp.GetData(URL, true)
+		gbtHttp.GetOpenOrdersDataJson(URL, true)
 		status = true
 	default:
 		status = false
