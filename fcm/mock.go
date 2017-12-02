@@ -9,7 +9,7 @@ func FcmBodyLegacy() string {
 	return legacyApiExample()
 }
 
-func tokenBodyExample() string {
+func topicBodyExample() string {
 	json := `{
 					"message": {
 						"topic": "subscriber-updates",
@@ -40,7 +40,7 @@ func tokenBodyExample() string {
 	return json
 }
 
-func topicBodyExample() string {
+func tokenBodyExample() string {
 	json := `{
 				"message": {
 					"token": "fvztYIIwJ7Y:APA91bEhzhnbv5B8OCZQejOUDbjaW-87CZUUJv92yNeVIDGmpNLpSJ8JRhg5s1ESVaOGDCI0dGjGJdyWmhNspOyD_OkQPZbkETjV_Bv0MgR1fIAR766AUBd7hzmtmCDoA9bv2nXB17_d",
