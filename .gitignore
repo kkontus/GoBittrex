@@ -21,3 +21,6 @@
 
 # binary
 GoBittrex
+
+# creds
+service-account.json

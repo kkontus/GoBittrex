@@ -8,6 +8,7 @@ import (
 	gbtConfig "GoBittrex/config"
 	gbtValidator "GoBittrex/validator"
 	gbtScheduler "GoBittrex/scheduler"
+	gbtFcm "GoBittrex/fcm"
 )
 
 func SelectBittrexEndpoint(cmd string, args interface{}) bool {
@@ -43,6 +44,9 @@ func SelectBittrexEndpoint(cmd string, args interface{}) bool {
 		default:
 			status = false
 		}
+	case "sendPush":
+		sendPush()
+		status = true
 	default:
 		status = false
 	}
@@ -94,4 +98,8 @@ func runStartTrailingScheduler(coin string, SL float32, TP float32, TTP float32)
 	//time.Sleep(3600 * time.Second)
 	//scheduler <- true
 	fmt.Println("Exiting trailing")
+}
+
+func sendPush() {
+	gbtFcm.SendPush(false) // refactor this to send message instead hardcoded data
 }
