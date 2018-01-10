@@ -25,6 +25,8 @@ func ValidateParams(args []string) (command string, params interface{}, err erro
 		return validateGetOpenOrdersParams(args)
 	case "startTrailing":
 		return validateStartTrailingParams(args)
+	case "getOrderBook":
+		return validateGetOrderBookParams(args)
 	case "sendPush":
 		return validateSendPushParams(args)
 	default:
@@ -72,23 +74,33 @@ func validateGetOpenOrdersParams(args []string) (command string, params interfac
 	}
 }
 
+func validateGetOrderBookParams(args []string) (command string, params interface{}, err error) {
+	cmd := args[1]
+	if len(args) == 3 {
+		s := GetOrderBookParams{Coin: args[2]}
+		return cmd, s, nil
+	} else {
+		return cmd, nil, errors.New(fmt.Sprintf("%s unsupported parameters", cmd))
+	}
+}
+
 func validateStartTrailingParams(args []string) (command string, params interface{}, err error) {
 	cmd := args[1]
 
-	if len(args) == 6 {
-		valueSL, errSL := strconv.ParseFloat(args[3], 32)
+	if len(args) == 9 {
+		valueSL, errSL := strconv.ParseFloat(args[4], 32)
 		if errSL != nil {
 			return cmd, nil, errSL
 		}
 		SL := float32(valueSL)
 
-		valueTP, errTP := strconv.ParseFloat(args[4], 32)
+		valueTP, errTP := strconv.ParseFloat(args[6], 32)
 		if errTP != nil {
 			return cmd, nil, errTP
 		}
 		TP := float32(valueTP)
 
-		valueTTP, errTTP := strconv.ParseFloat(args[5], 32)
+		valueTTP, errTTP := strconv.ParseFloat(args[8], 32)
 		if errTTP != nil {
 			return cmd, nil, errTTP
 		}

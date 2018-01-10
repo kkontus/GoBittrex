@@ -38,28 +38,34 @@ func GetData(url string, authRequired bool) {
 	}
 }
 
-func GetMarketsDataJson(url string, authRequired bool) {
+func GetMarkets(url string, authRequired bool) {
 	err, decoder, resp := jsonDecode(url, authRequired)
 	defer resp.Body.Close()
 	getMarkets(err, decoder)
 }
 
-func GetCurrenciesDataJson(url string, authRequired bool) {
+func GetCurrencies(url string, authRequired bool) {
 	err, decoder, resp := jsonDecode(url, authRequired)
 	defer resp.Body.Close()
 	getCurrencies(err, decoder)
 }
 
-func GetTicksDataJson(url string, authRequired bool) {
+func GetTicks(url string, authRequired bool) {
 	err, decoder, resp := jsonDecode(url, authRequired)
 	defer resp.Body.Close()
 	getTicksData(err, decoder)
 }
 
-func GetOpenOrdersDataJson(url string, authRequired bool) {
+func GetOpenOrders(url string, authRequired bool) {
 	err, decoder, resp := jsonDecode(url, authRequired)
 	defer resp.Body.Close()
 	getOpenOrdersData(err, decoder)
+}
+
+func GetOrderBook(url string, authRequired bool) {
+	err, decoder, resp := jsonDecode(url, authRequired)
+	defer resp.Body.Close()
+	getOrderBookData(err, decoder)
 }
 
 func getMarkets(err error, decoder *json.Decoder) {
@@ -113,7 +119,32 @@ func getOpenOrdersData(err error, decoder *json.Decoder) {
 		//fmt.Printf("Result: %v\n", responseData.Result)
 		result := responseData.Result
 		for i, elem := range result {
-			fmt.Printf("%d: %s %s %f\n", i, elem.Exchange, elem.OrderType, elem.Quantity)
+			fmt.Printf("%d: %s %s %f %f\n", i, elem.Exchange, elem.OrderType, elem.Quantity, elem.Limit)
+		}
+	}
+}
+
+func getOrderBookData(err error, decoder *json.Decoder) {
+	responseData := gbtEntity.OrderBookResponse{} // or var responseData = gbtEntity.OpenOrdersResponse{}
+	err = decoder.Decode(&responseData)
+	if err != nil {
+		gbtError.ShowError(err)
+	} else {
+		fmt.Println("BUY")
+
+		//fmt.Printf("Result: %v\n", responseData.Result)
+		result := responseData.Result
+
+		resultBuy := result.Buy
+		for i, elem := range resultBuy {
+			fmt.Printf("%d: %f %f\n", i, elem.Rate, elem.Quantity)
+		}
+
+		fmt.Println("SELL")
+
+		resultSell := result.Sell
+		for i, elem := range resultSell {
+			fmt.Printf("%d: %f %f\n", i, elem.Rate, elem.Quantity)
 		}
 	}
 }

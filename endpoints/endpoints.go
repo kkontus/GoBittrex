@@ -1,4 +1,4 @@
-package tasks
+package endpoints
 
 import (
 	"fmt"
@@ -44,6 +44,14 @@ func SelectBittrexEndpoint(cmd string, args interface{}) bool {
 		default:
 			status = false
 		}
+	case "getOrderBook":
+		switch v := args.(type) {
+		case gbtValidator.GetOrderBookParams:
+			getOrderBook(v.Coin)
+			status = true
+		default:
+			status = false
+		}
 	case "sendPush":
 		sendPush()
 		status = true
@@ -57,27 +65,33 @@ func getMarkets() {
 	//gbtHttp.GetData("https://bittrex.com/api/v1.1/public/getmarkets", false)
 	//URL := API_PATH + "/public/getmarkets"
 	URL := fmt.Sprintf("%s/public/getmarkets", gbtConfig.API_PATH)
-	gbtHttp.GetMarketsDataJson(URL, false)
+	gbtHttp.GetMarkets(URL, false)
 }
 
 func getCurrencies() {
 	//gbtHttp.GetData("https://bittrex.com/api/v1.1/public/getcurrencies", false)
 	//URL := API_PATH + "/public/getcurrencies"
 	URL := fmt.Sprintf("%s/public/getcurrencies", gbtConfig.API_PATH)
-	gbtHttp.GetCurrenciesDataJson(URL, false)
+	gbtHttp.GetCurrencies(URL, false)
 }
 
 func getTickes(coin string) {
 	//gbtHttp.GetData(gbtConfig.API_PATH_V2+"/pub/market/GetTicks?marketName=BTC-"+coin+"&tickInterval=day&_="+gbtUtil.FormatInt(gbtUtil.GetTimestamp()), false)
 	//URL := gbtConfig.API_PATH_V2 + "/pub/market/GetTicks?marketName=BTC-" + coin + "&tickInterval=day&_=" + gbtUtil.FormatInt(gbtUtil.GetTimestamp())
 	URL := fmt.Sprintf("%s/pub/market/GetTicks?marketName=BTC-%s&tickInterval=day&_=%s", gbtConfig.API_PATH_V2, coin, gbtUtil.FormatInt(gbtUtil.GetTimestamp()))
-	gbtHttp.GetTicksDataJson(URL, false)
+	gbtHttp.GetTicks(URL, false)
 }
 
 func getOpenOrders(coin string) {
 	URL := fmt.Sprintf("%s/market/getopenorders?apikey=%s&market=BTC-%s", gbtConfig.API_PATH, gbtConfig.API_KEY, coin)
 	gbtHttp.GetData(URL, true)
-	gbtHttp.GetOpenOrdersDataJson(URL, true)
+	gbtHttp.GetOpenOrders(URL, true)
+}
+
+func getOrderBook(coin string) {
+	URL := fmt.Sprintf("%s/public/getorderbook?market=BTC-%s&type=both", gbtConfig.API_PATH, coin)
+    // gbtHttp.GetData(URL, false)
+	gbtHttp.GetOrderBook(URL, false)
 }
 
 func startTrailing(coin string, SL float32, TP float32, TTP float32) {
