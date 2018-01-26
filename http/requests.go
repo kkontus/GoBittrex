@@ -68,6 +68,22 @@ func GetOrderBook(url string, authRequired bool) {
 	getOrderBookData(err, decoder)
 }
 
+func GetCmcInfo(url string, authRequired bool) (info interface{}, err error) {
+	err, decoder, resp := jsonDecode(url, authRequired)
+	defer resp.Body.Close()
+	return getCmcInfo(err, decoder)
+}
+
+func getCmcInfo(err error, decoder *json.Decoder) (info interface{}, error error) {
+	var responseData []gbtEntity.CmcCoinInfo // or var responseData = gbtEntity.CmcCoinInfo{}
+	err = decoder.Decode(&responseData)
+	if err != nil {
+		return nil, err
+	} else {
+		return responseData, nil
+	}
+}
+
 func getMarkets(err error, decoder *json.Decoder) {
 	responseData := gbtEntity.MarketsResponse{} // or var responseData = gbtEntity.MarketsResponse{}
 	err = decoder.Decode(&responseData)

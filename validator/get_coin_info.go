@@ -1,5 +1,5 @@
 package validator
 
-type GetOrderBookParams struct {
+type GetCoinInfoParams struct {
 	Coin string
 }

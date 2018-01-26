@@ -1,4 +1,4 @@
-package endpoints
+package routes
 
 import (
 	"fmt"
@@ -8,10 +8,9 @@ import (
 	gbtConfig "GoBittrex/config"
 	gbtValidator "GoBittrex/validator"
 	gbtScheduler "GoBittrex/scheduler"
-	gbtFcm "GoBittrex/fcm"
 )
 
-func SelectBittrexEndpoint(cmd string, args interface{}) bool {
+func SelectBittrexRoute(cmd string, args interface{}) bool {
 	status := false
 	switch cmd {
 	case "getMarkets":
@@ -36,14 +35,6 @@ func SelectBittrexEndpoint(cmd string, args interface{}) bool {
 		default:
 			status = false
 		}
-	case "startTrailing":
-		switch v := args.(type) {
-		case gbtValidator.StartTrailingParams:
-			startTrailing(v.Coin, v.SL, v.TP, v.TTP)
-			status = true
-		default:
-			status = false
-		}
 	case "getOrderBook":
 		switch v := args.(type) {
 		case gbtValidator.GetOrderBookParams:
@@ -52,9 +43,14 @@ func SelectBittrexEndpoint(cmd string, args interface{}) bool {
 		default:
 			status = false
 		}
-	case "sendPush":
-		sendPush()
-		status = true
+	case "startTrailing":
+		switch v := args.(type) {
+		case gbtValidator.StartTrailingParams:
+			startTrailing(v.Coin, v.SL, v.TP, v.TTP)
+			status = true
+		default:
+			status = false
+		}
 	default:
 		status = false
 	}
@@ -90,7 +86,7 @@ func getOpenOrders(coin string) {
 
 func getOrderBook(coin string) {
 	URL := fmt.Sprintf("%s/public/getorderbook?market=BTC-%s&type=both", gbtConfig.API_PATH, coin)
-    // gbtHttp.GetData(URL, false)
+	// gbtHttp.GetData(URL, false)
 	gbtHttp.GetOrderBook(URL, false)
 }
 
@@ -112,8 +108,4 @@ func runStartTrailingScheduler(coin string, SL float32, TP float32, TTP float32)
 	//time.Sleep(3600 * time.Second)
 	//scheduler <- true
 	fmt.Println("Exiting trailing")
-}
-
-func sendPush() {
-	gbtFcm.SendPush(false) // refactor this to send message instead hardcoded data
 }

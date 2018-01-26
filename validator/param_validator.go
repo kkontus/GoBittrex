@@ -23,12 +23,17 @@ func ValidateParams(args []string) (command string, params interface{}, err erro
 		return validateGetTicksParams(args)
 	case "getOpenOrders":
 		return validateGetOpenOrdersParams(args)
-	case "startTrailing":
-		return validateStartTrailingParams(args)
 	case "getOrderBook":
 		return validateGetOrderBookParams(args)
+	case "startTrailing":
+		return validateStartTrailingParams(args)
+	case "runServer":
+		return validateRunServerParams(args)
 	case "sendPush":
 		return validateSendPushParams(args)
+	case "getCoinInfo":
+		return validateGetCoinInfoParams(args)
+
 	default:
 		return cmd, nil, errors.New("command not recognized")
 	}
@@ -113,10 +118,29 @@ func validateStartTrailingParams(args []string) (command string, params interfac
 	}
 }
 
+func validateRunServerParams(args []string) (command string, params interface{}, err error) {
+	cmd := args[1]
+	if len(args) == 2 {
+		return cmd, nil, nil
+	} else {
+		return cmd, nil, errors.New(fmt.Sprintf("%s unsupported parameters", cmd))
+	}
+}
+
 func validateSendPushParams(args []string) (command string, params interface{}, err error) {
 	cmd := args[1]
 	if len(args) == 2 {
 		return cmd, nil, nil
+	} else {
+		return cmd, nil, errors.New(fmt.Sprintf("%s unsupported parameters", cmd))
+	}
+}
+
+func validateGetCoinInfoParams(args []string) (command string, params interface{}, err error) {
+	cmd := args[1]
+	if len(args) == 3 {
+		s := GetCoinInfoParams{Coin: args[2]}
+		return cmd, s, nil
 	} else {
 		return cmd, nil, errors.New(fmt.Sprintf("%s unsupported parameters", cmd))
 	}
