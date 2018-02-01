@@ -1,17 +1,62 @@
 package routes
 
 import (
+	gbtConfig "GoBittrex/config"
+	gbtCryptoDb "GoBittrex/databases"
+	gbtEntity "GoBittrex/entity"
+	gbtError "GoBittrex/error"
+	"database/sql"
 	"fmt"
 	"net/http"
-	gbtEntity "GoBittrex/entity"
-	gbtConfig "GoBittrex/config"
 )
 
 func RunServer() {
 	http.HandleFunc("/", handler)
 	http.HandleFunc("/coin-info", handlerExample)
+	http.Handle("/coin-info-gbt", helloHandlerExample())
 
 	http.ListenAndServe(":"+gbtConfig.CRYPTO_API_PORT, nil)
+}
+
+func simpleSelectHandler(db *sql.DB) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		//if err != nil {
+		//	gbtError.ShowError(err)
+		//}
+
+		//defer db.Close()
+
+		var err = db.Ping()
+		if err != nil {
+			gbtError.ShowError(err)
+		}
+
+		// prepare statement for reading data
+		rows, err := db.Query("SELECT id, name FROM names")
+		if err != nil {
+			gbtError.ShowError(err)
+		}
+
+		defer rows.Close()
+
+		var id int
+		var name string
+
+		for rows.Next() {
+			rows.Scan(&id, &name)
+			fmt.Printf("%d : %s \n", id, name)
+			fmt.Fprintf(w, "%d : %s \n", id, name)
+		}
+	})
+}
+
+func helloHandlerExample() http.Handler {
+	db, err := gbtCryptoDb.Connect(gbtConfig.MYSQL_HOST, gbtConfig.MYSQL_PORT, gbtConfig.MYSQL_USERNAME, gbtConfig.MYSQL_PASSWORD, gbtConfig.MYSQL_DBNAME)
+	if err != nil {
+		gbtError.ShowError(err)
+	}
+
+	return simpleSelectHandler(db)
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {

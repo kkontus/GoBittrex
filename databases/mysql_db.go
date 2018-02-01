@@ -7,6 +7,10 @@ import (
 	gbtError "GoBittrex/error"
 )
 
+type DB struct {
+	DB *sql.DB
+}
+
 // example connect: gbtCryptoDb.Connect(gbtConfig.MYSQL_HOST, gbtConfig.MYSQL_PORT, gbtConfig.MYSQL_USERNAME, gbtConfig.MYSQL_PASSWORD, gbtConfig.MYSQL_DBNAME)
 func Connect(host string, port string, username string, password string, dbname string) (*sql.DB, error) {
 	dataSource := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", username, password, host, port, dbname)
