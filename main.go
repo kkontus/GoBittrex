@@ -65,7 +65,7 @@ func pingRoutesCmc() {
 	if !status {
 		fmt.Println("Unable to run command, check if command is valid:")
 		fmt.Println("")
-		fmt.Println("./GoBittrex getCoinInfo <coin>")
+		fmt.Println("./GoBittrex getCoinInfo <coin_symbol>")
 		fmt.Println("./GoBittrex getCoinsInfo <convert> <start> <limit>")
 		fmt.Println("")
 	} else {
