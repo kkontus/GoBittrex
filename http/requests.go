@@ -68,14 +68,52 @@ func GetOrderBook(url string, authRequired bool) {
 	getOrderBookData(err, decoder)
 }
 
+// COINMARKETCAP
 func GetCmcInfo(url string, authRequired bool) (info interface{}, err error) {
 	err, decoder, resp := jsonDecode(url, authRequired)
 	defer resp.Body.Close()
 	return getCmcInfo(err, decoder)
 }
 
+// COINMARKETCAP
 func getCmcInfo(err error, decoder *json.Decoder) (info interface{}, error error) {
-	var responseData []gbtEntity.CmcCoinInfo // or var responseData = gbtEntity.CmcCoinInfo{}
+	var responseData []gbtEntity.CmcCoinInfo
+	err = decoder.Decode(&responseData)
+	if err != nil {
+		return nil, err
+	} else {
+		return responseData, nil
+	}
+}
+
+// COINMARKETCAL
+func GetCmcalCoins(url string, authRequired bool) (info interface{}, err error) {
+	err, decoder, resp := jsonDecode(url, authRequired)
+	defer resp.Body.Close()
+	return getCmcalCoins(err, decoder)
+}
+
+// COINMARKETCAL (talk with guys from coinmarketcal if this can be changed to get json object, and parsed to struct)
+func getCmcalCoins(err error, decoder *json.Decoder) (info interface{}, error error) {
+	var responseData []string
+	err = decoder.Decode(&responseData)
+	if err != nil {
+		return nil, err
+	} else {
+		return responseData, nil
+	}
+}
+
+// COINMARKETCAL
+func GetCmcalCategories(url string, authRequired bool) (info interface{}, err error) {
+	err, decoder, resp := jsonDecode(url, authRequired)
+	defer resp.Body.Close()
+	return getCmcalCategories(err, decoder)
+}
+
+// COINMARKETCAL (talk with guys from coinmarketcal if this can be changed to get json object, and parsed to struct)
+func getCmcalCategories(err error, decoder *json.Decoder) (info interface{}, error error) {
+	var responseData []string
 	err = decoder.Decode(&responseData)
 	if err != nil {
 		return nil, err

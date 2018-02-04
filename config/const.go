@@ -17,16 +17,21 @@ const (
 	API_SECRET                = "xxxxx"
 	API_BASE_COINMARKETCAP    = "https://api.coinmarketcap.com/" // Coinmarketcap API endpoint
 	API_VERSION_COINMARKETCAP = "v1"
-	API_PATCH_COINMARKETCAP   = API_BASE_COINMARKETCAP + API_VERSION_COINMARKETCAP
-	MYSQL_HOST                = "127.0.0.1"
+	API_PATH_COINMARKETCAP    = API_BASE_COINMARKETCAP + API_VERSION_COINMARKETCAP
+	API_BASE_COINMARKETCAL    = "https://www.coinmarketcal.com/" // Coinmarketcal API endpoint
+	API_VERSION_COINMARKETCAL = "api"
+	API_PATH_COINMARKETCAL    = API_BASE_COINMARKETCAL + API_VERSION_COINMARKETCAL
+	MYSQL_HOST                = "127.0.0.1" // or localhost
 	MYSQL_PORT                = "3306"
 	MYSQL_USERNAME            = "xxxxx"
 	MYSQL_PASSWORD            = "xxxxx"
 	MYSQL_DBNAME              = "crypto"
 	CRYPTO_API_PORT           = "8080"
+	DEFAULT_CURRENCY          = "USD"
 )
 
 var RoutesBittrex = []string{"getMarkets", "getCurrencies", "getTicks", "getOpenOrders", "getOrderBook", "startTrailing"}
-var RoutesCmc = []string{"getCoinInfo"}
+var RoutesCmc = []string{"getCoinInfo", "getCoinsInfo"}
+var RoutesCmcal = []string{"getCmcalCoins", "getCmcalCategories", "getCmcalEvents"}
 var RoutesFirebase = []string{"sendPush"}
 var RoutesGeneral = []string{"runServer"}
