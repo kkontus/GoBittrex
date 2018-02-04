@@ -7,6 +7,7 @@ import (
 	gbtValidator "GoBittrex/validator"
 	gbtEntity "GoBittrex/entity"
 	gbtError "GoBittrex/error"
+	gbtUtil "GoBittrex/util"
 )
 
 func SelectCoinmarketcapRoute(cmd string, args interface{}) bool {
@@ -20,7 +21,14 @@ func SelectCoinmarketcapRoute(cmd string, args interface{}) bool {
 		default:
 			status = false
 		}
-		status = true
+	case "getCoinsInfo":
+		switch v := args.(type) {
+		case gbtValidator.GetCoinsInfoParams:
+			getCoinsInfo(v.Convert, v.Start, v.Limit)
+			status = true
+		default:
+			status = false
+		}
 	default:
 		status = false
 	}
@@ -28,7 +36,7 @@ func SelectCoinmarketcapRoute(cmd string, args interface{}) bool {
 }
 
 func getCoinInfo(coin string) {
-	URL := fmt.Sprintf("%s/ticker/%s/", gbtConfig.API_PATCH_COINMARKETCAP, coin)
+	URL := fmt.Sprintf("%s/ticker/%s/", gbtConfig.API_PATH_COINMARKETCAP, coin)
 	resp, err := gbtHttp.GetCmcInfo(URL, false)
 
 	if err != nil {
@@ -43,7 +51,37 @@ func getCoinInfo(coin string) {
 	}
 }
 
+func getCoinsInfo(convert string, start string, limit string) {
+	if convert == "" {
+		convert = gbtConfig.DEFAULT_CURRENCY
+	}
+
+	if start == "" || !gbtUtil.IsNumeric(start) {
+		start = "0"
+	}
+
+	URL := fmt.Sprintf("%s/ticker/?convert=%s&start=%s", gbtConfig.API_PATH_COINMARKETCAP, convert, start)
+	if limit != "" && gbtUtil.IsNumeric(start) {
+		URL = fmt.Sprintf("%s&limit=%s", URL, limit)
+	}
+
+	resp, err := gbtHttp.GetCmcInfo(URL, false)
+
+	if err != nil {
+		gbtError.ShowError(err)
+	} else {
+		switch v := resp.(type) {
+		case []gbtEntity.CmcCoinInfo:
+			for i, elem := range v {
+				fmt.Printf("%d: %s %s %s %s\n", i, elem.Name, elem.Symbol, elem.AvailableSupply, elem.MaxSupply)
+			}
+		default:
+			fmt.Println("Unsupported value in GetCmcInfo")
+		}
+	}
+}
+
 func GetCoinInfoAPI(coin string) (info interface{}, err error) {
-	URL := fmt.Sprintf("%s/ticker/%s/", gbtConfig.API_PATCH_COINMARKETCAP, coin)
+	URL := fmt.Sprintf("%s/ticker/%s/", gbtConfig.API_PATH_COINMARKETCAP, coin)
 	return gbtHttp.GetCmcInfo(URL, false)
 }

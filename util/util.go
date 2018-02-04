@@ -16,6 +16,11 @@ func FormatInt(i int64) string {
 	return strconv.FormatInt(int64(i), 10)
 }
 
+func IsNumeric(s string) bool {
+	_, err := strconv.ParseFloat(s, 64)
+	return err == nil
+}
+
 func JsonPrettyPrint(in string) string {
 	var out bytes.Buffer // or out := bytes.Buffer{}
 	err := json.Indent(&out, []byte(in), "", "\t")

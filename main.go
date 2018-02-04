@@ -26,7 +26,7 @@ func main() {
 	} else if gbtUtil.Contains(routesGeneral, os.Args[1]) {
 		pingRoutesGeneral()
 	} else {
-		fmt.Println("Route Slice does not contain the element", os.Args[1])
+		fmt.Println("Route Slice does not contain the element, check if route is added to config", os.Args[1])
 	}
 }
 
@@ -63,6 +63,7 @@ func pingRoutesCmc() {
 		fmt.Println("Unable to run command, check if command is valid:")
 		fmt.Println("")
 		fmt.Println("./GoBittrex getCoinInfo <coin>")
+		fmt.Println("./GoBittrex getCoinsInfo <convert> <start> <limit>")
 		fmt.Println("")
 	} else {
 		fmt.Println("Status: OK'")

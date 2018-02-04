@@ -33,6 +33,8 @@ func ValidateParams(args []string) (command string, params interface{}, err erro
 		return validateSendPushParams(args)
 	case "getCoinInfo":
 		return validateGetCoinInfoParams(args)
+	case "getCoinsInfo":
+		return validateGetCoinsInfoParams(args)
 
 	default:
 		return cmd, nil, errors.New("command not recognized")
@@ -140,6 +142,19 @@ func validateGetCoinInfoParams(args []string) (command string, params interface{
 	cmd := args[1]
 	if len(args) == 3 {
 		s := GetCoinInfoParams{Coin: args[2]}
+		return cmd, s, nil
+	} else {
+		return cmd, nil, errors.New(fmt.Sprintf("%s unsupported parameters", cmd))
+	}
+}
+
+func validateGetCoinsInfoParams(args []string) (command string, params interface{}, err error) {
+	cmd := args[1]
+	if len(args) == 5 {
+		s := GetCoinsInfoParams{Convert: args[2], Start: args[3], Limit: args[4]}
+		return cmd, s, nil
+	} else if len(args) == 4 {
+		s := GetCoinsInfoParams{Convert: args[2], Start: args[3], Limit: ""}
 		return cmd, s, nil
 	} else {
 		return cmd, nil, errors.New(fmt.Sprintf("%s unsupported parameters", cmd))
