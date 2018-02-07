@@ -39,6 +39,8 @@ func ValidateParams(args []string) (command string, params interface{}, err erro
 		return validateGetCmcalCoinsParams(args)
 	case "getCmcalCategories":
 		return validateGetCmcalCategoriesParams(args)
+	case "getCmcalEvents":
+		return validateGetCmcalEventsParams(args)
 
 	default:
 		return cmd, nil, errors.New("command not recognized")
@@ -175,6 +177,15 @@ func validateGetCmcalCoinsParams(args []string) (command string, params interfac
 }
 
 func validateGetCmcalCategoriesParams(args []string) (command string, params interface{}, err error) {
+	cmd := args[1]
+	if len(args) == 2 {
+		return cmd, nil, nil
+	} else {
+		return cmd, nil, errors.New(fmt.Sprintf("%s unsupported parameters", cmd))
+	}
+}
+
+func validateGetCmcalEventsParams(args []string) (command string, params interface{}, err error) {
 	cmd := args[1]
 	if len(args) == 2 {
 		return cmd, nil, nil
