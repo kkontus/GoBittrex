@@ -9,17 +9,17 @@ Download or clone project from Github
 run:
 $ go get -u golang.org/x/oauth2/google
 $ go build
-$ ./GoBittrex getMarkets
-$ ./GoBittrex getCurrencies
-$ ./GoBittrex getTicks <coin_symbol>
-$ ./GoBittrex getOpenOrders <coin_symbol>
-$ ./GoBittrex getOrderBook <coin_symbol>
-$ ./GoBittrex getCoinInfo <coin_symbol>
-$ ./GoBittrex getCoinsInfo <convert> <start> <limit>
-$ ./GoBittrex getCmcalCoins
-$ ./GoBittrex getCmcalCategories
-$ ./GoBittrex runServer"
-$ ./GoBittrex sendPush
+$ ./GoBittrex --cmd=getMarkets
+$ ./GoBittrex --cmd=getCurrencies
+$ ./GoBittrex --cmd=getTicks <coin_symbol>
+$ ./GoBittrex --cmd=getOpenOrders <coin_symbol>
+$ ./GoBittrex --cmd=getOrderBook <coin_symbol>
+$ ./GoBittrex --cmd=getCoinInfo <coin_symbol>
+$ ./GoBittrex --cmd=getCoinsInfo <convert> <start> <limit>
+$ ./GoBittrex --cmd=getCmcalCoins
+$ ./GoBittrex --cmd=getCmcalCategories
+$ ./GoBittrex --cmd=runServer"
+$ ./GoBittrex --cmd=sendPush // CryptocurrencyManager mobile app FCM token has to be supplied
 ```
 
 ```bash

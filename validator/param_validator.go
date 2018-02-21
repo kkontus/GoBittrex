@@ -4,43 +4,39 @@ import (
 	"errors"
 	"strconv"
 	"fmt"
+	"flag"
 )
 
 func ValidateParams(args []string) (command string, params interface{}, err error) {
-	cmd := ""
-	if len(args) > 1 {
-		cmd = args[1]
-	} else {
-		return cmd, nil, errors.New("command parameter must be set")
-	}
+	cmd := flag.Lookup("cmd").Value.(flag.Getter).Get().(string)
 
 	switch cmd {
 	case "getMarkets":
-		return validateGetMarketsParams(args)
+		return validateGetMarketsParams(cmd, args)
 	case "getCurrencies":
-		return validateGetCurrenciesParams(args)
+		return validateGetCurrenciesParams(cmd, args)
 	case "getTicks":
-		return validateGetTicksParams(args)
+		return validateGetTicksParams(cmd, args)
 	case "getOpenOrders":
-		return validateGetOpenOrdersParams(args)
+		return validateGetOpenOrdersParams(cmd, args)
 	case "getOrderBook":
-		return validateGetOrderBookParams(args)
+		return validateGetOrderBookParams(cmd, args)
 	case "startTrailing":
-		return validateStartTrailingParams(args)
+		return validateStartTrailingParams(cmd, args)
 	case "runServer":
-		return validateRunServerParams(args)
+		return validateRunServerParams(cmd, args)
 	case "sendPush":
-		return validateSendPushParams(args)
+		return validateSendPushParams(cmd, args)
 	case "getCoinInfo":
-		return validateGetCoinInfoParams(args)
+		return validateGetCoinInfoParams(cmd, args)
 	case "getCoinsInfo":
-		return validateGetCoinsInfoParams(args)
+		return validateGetCoinsInfoParams(cmd, args)
 	case "getCmcalCoins":
-		return validateGetCmcalCoinsParams(args)
+		return validateGetCmcalCoinsParams(cmd, args)
 	case "getCmcalCategories":
-		return validateGetCmcalCategoriesParams(args)
+		return validateGetCmcalCategoriesParams(cmd, args)
 	case "getCmcalEvents":
-		return validateGetCmcalEventsParams(args)
+		return validateGetCmcalEventsParams(cmd, args)
 
 	default:
 		return cmd, nil, errors.New("command not recognized")
@@ -49,145 +45,131 @@ func ValidateParams(args []string) (command string, params interface{}, err erro
 	return cmd, params, err
 }
 
-func validateGetMarketsParams(args []string) (command string, params interface{}, err error) {
-	cmd := args[1]
-	if len(args) == 2 {
+func validateGetMarketsParams(cmd string, args []string) (command string, params interface{}, err error) {
+	if len(args) == 0 {
 		return cmd, nil, nil
 	} else {
 		return cmd, nil, errors.New(fmt.Sprintf("%s unsupported parameters", cmd))
 	}
 }
 
-func validateGetCurrenciesParams(args []string) (command string, params interface{}, err error) {
-	cmd := args[1]
-	if len(args) == 2 {
+func validateGetCurrenciesParams(cmd string, args []string) (command string, params interface{}, err error) {
+	if len(args) == 0 {
 		return cmd, nil, nil
 	} else {
 		return cmd, nil, errors.New(fmt.Sprintf("%s unsupported parameters", cmd))
 	}
 }
 
-func validateGetTicksParams(args []string) (command string, params interface{}, err error) {
-	cmd := args[1]
-	if len(args) == 3 {
-		s := GetTicksParams{Coin: args[2]}
+func validateGetTicksParams(cmd string, args []string) (command string, params interface{}, err error) {
+	if len(args) == 1 {
+		s := GetTicksParams{Coin: args[0]}
 		return cmd, s, nil
 	} else {
 		return cmd, nil, errors.New(fmt.Sprintf("%s unsupported parameters", cmd))
 	}
 }
 
-func validateGetOpenOrdersParams(args []string) (command string, params interface{}, err error) {
-	cmd := args[1]
-	if len(args) == 3 {
-		s := GetOpenOrdersParams{Coin: args[2]}
+func validateGetOpenOrdersParams(cmd string, args []string) (command string, params interface{}, err error) {
+	if len(args) == 1 {
+		s := GetOpenOrdersParams{Coin: args[0]}
 		return cmd, s, nil
 	} else {
 		return cmd, nil, errors.New(fmt.Sprintf("%s unsupported parameters", cmd))
 	}
 }
 
-func validateGetOrderBookParams(args []string) (command string, params interface{}, err error) {
-	cmd := args[1]
-	if len(args) == 3 {
-		s := GetOrderBookParams{Coin: args[2]}
+func validateGetOrderBookParams(cmd string, args []string) (command string, params interface{}, err error) {
+	if len(args) == 1 {
+		s := GetOrderBookParams{Coin: args[0]}
 		return cmd, s, nil
 	} else {
 		return cmd, nil, errors.New(fmt.Sprintf("%s unsupported parameters", cmd))
 	}
 }
 
-func validateStartTrailingParams(args []string) (command string, params interface{}, err error) {
-	cmd := args[1]
-
-	if len(args) == 9 {
-		valueSL, errSL := strconv.ParseFloat(args[4], 32)
+func validateStartTrailingParams(cmd string, args []string) (command string, params interface{}, err error) {
+	if len(args) == 7 {
+		valueSL, errSL := strconv.ParseFloat(args[2], 32)
 		if errSL != nil {
 			return cmd, nil, errSL
 		}
 		SL := float32(valueSL)
 
-		valueTP, errTP := strconv.ParseFloat(args[6], 32)
+		valueTP, errTP := strconv.ParseFloat(args[4], 32)
 		if errTP != nil {
 			return cmd, nil, errTP
 		}
 		TP := float32(valueTP)
 
-		valueTTP, errTTP := strconv.ParseFloat(args[8], 32)
+		valueTTP, errTTP := strconv.ParseFloat(args[6], 32)
 		if errTTP != nil {
 			return cmd, nil, errTTP
 		}
 		TTP := float32(valueTTP)
 
-		s := StartTrailingParams{Coin: args[2], SL: SL, TP: TP, TTP: TTP}
+		s := StartTrailingParams{Coin: args[0], SL: SL, TP: TP, TTP: TTP}
 		return cmd, s, nil
 	} else {
 		return cmd, nil, errors.New(fmt.Sprintf("%s unsupported parameters", cmd))
 	}
 }
 
-func validateRunServerParams(args []string) (command string, params interface{}, err error) {
-	cmd := args[1]
-	if len(args) == 2 {
+func validateRunServerParams(cmd string, args []string) (command string, params interface{}, err error) {
+	if len(args) == 0 {
 		return cmd, nil, nil
 	} else {
 		return cmd, nil, errors.New(fmt.Sprintf("%s unsupported parameters", cmd))
 	}
 }
 
-func validateSendPushParams(args []string) (command string, params interface{}, err error) {
-	cmd := args[1]
-	if len(args) == 2 {
+func validateSendPushParams(cmd string, args []string) (command string, params interface{}, err error) {
+	if len(args) == 0 {
 		return cmd, nil, nil
 	} else {
 		return cmd, nil, errors.New(fmt.Sprintf("%s unsupported parameters", cmd))
 	}
 }
 
-func validateGetCoinInfoParams(args []string) (command string, params interface{}, err error) {
-	cmd := args[1]
+func validateGetCoinInfoParams(cmd string, args []string) (command string, params interface{}, err error) {
+	if len(args) == 1 {
+		s := GetCoinInfoParams{Coin: args[0]}
+		return cmd, s, nil
+	} else {
+		return cmd, nil, errors.New(fmt.Sprintf("%s unsupported parameters", cmd))
+	}
+}
+
+func validateGetCoinsInfoParams(cmd string, args []string) (command string, params interface{}, err error) {
 	if len(args) == 3 {
-		s := GetCoinInfoParams{Coin: args[2]}
+		s := GetCoinsInfoParams{Convert: args[0], Start: args[1], Limit: args[2]}
+		return cmd, s, nil
+	} else if len(args) == 2 {
+		s := GetCoinsInfoParams{Convert: args[0], Start: args[1], Limit: ""}
 		return cmd, s, nil
 	} else {
 		return cmd, nil, errors.New(fmt.Sprintf("%s unsupported parameters", cmd))
 	}
 }
 
-func validateGetCoinsInfoParams(args []string) (command string, params interface{}, err error) {
-	cmd := args[1]
-	if len(args) == 5 {
-		s := GetCoinsInfoParams{Convert: args[2], Start: args[3], Limit: args[4]}
-		return cmd, s, nil
-	} else if len(args) == 4 {
-		s := GetCoinsInfoParams{Convert: args[2], Start: args[3], Limit: ""}
-		return cmd, s, nil
-	} else {
-		return cmd, nil, errors.New(fmt.Sprintf("%s unsupported parameters", cmd))
-	}
-}
-
-func validateGetCmcalCoinsParams(args []string) (command string, params interface{}, err error) {
-	cmd := args[1]
-	if len(args) == 2 {
+func validateGetCmcalCoinsParams(cmd string, args []string) (command string, params interface{}, err error) {
+	if len(args) == 0 {
 		return cmd, nil, nil
 	} else {
 		return cmd, nil, errors.New(fmt.Sprintf("%s unsupported parameters", cmd))
 	}
 }
 
-func validateGetCmcalCategoriesParams(args []string) (command string, params interface{}, err error) {
-	cmd := args[1]
-	if len(args) == 2 {
+func validateGetCmcalCategoriesParams(cmd string, args []string) (command string, params interface{}, err error) {
+	if len(args) == 0 {
 		return cmd, nil, nil
 	} else {
 		return cmd, nil, errors.New(fmt.Sprintf("%s unsupported parameters", cmd))
 	}
 }
 
-func validateGetCmcalEventsParams(args []string) (command string, params interface{}, err error) {
-	cmd := args[1]
-	if len(args) == 2 {
+func validateGetCmcalEventsParams(cmd string, args []string) (command string, params interface{}, err error) {
+	if len(args) == 0 {
 		return cmd, nil, nil
 	} else {
 		return cmd, nil, errors.New(fmt.Sprintf("%s unsupported parameters", cmd))

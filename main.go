@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
+	"flag"
+	"errors"
 	gbtRoutes "GoBittrex/routes"
 	gbtValidator "GoBittrex/validator"
 	gbtUtil "GoBittrex/util"
@@ -18,23 +20,41 @@ func main() {
 	routesFirebase := gbtConfig.RoutesFirebase
 	routesGeneral := gbtConfig.RoutesGeneral
 
-	if gbtUtil.Contains(routesBittrex, os.Args[1]) {
+	cmdPtr := parseFlags()
+
+	if gbtUtil.Contains(routesBittrex, *cmdPtr) {
 		pingRoutesBittrex()
-	} else if gbtUtil.Contains(routesCmc, os.Args[1]) {
+	} else if gbtUtil.Contains(routesCmc, *cmdPtr) {
 		pingRoutesCmc()
-	} else if gbtUtil.Contains(routesCmcal, os.Args[1]) {
+	} else if gbtUtil.Contains(routesCmcal, *cmdPtr) {
 		pingRoutesCmcal()
-	} else if gbtUtil.Contains(routesFirebase, os.Args[1]) {
+	} else if gbtUtil.Contains(routesFirebase, *cmdPtr) {
 		pingRoutesFirebase()
-	} else if gbtUtil.Contains(routesGeneral, os.Args[1]) {
+	} else if gbtUtil.Contains(routesGeneral, *cmdPtr) {
 		pingRoutesGeneral()
 	} else {
-		fmt.Println("Route Slice does not contain the element, check if route is added to config", os.Args[1])
+		fmt.Println("Route Slice does not contain the element, check if route is added to config", flag.Arg(0))
 	}
 }
 
+func parseFlags() *string {
+	cmdPtr := flag.String("cmd", "", "command")
+	flag.Parse()
+
+	fmt.Println("cmd: ", *cmdPtr)
+	fmt.Println(flag.Args())
+
+	if (*cmdPtr == "") {
+		err := errors.New("command parameter must be set")
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	return cmdPtr
+}
+
 func pingRoutesBittrex() {
-	cmd, params, err := gbtValidator.ValidateParams(os.Args)
+	cmd, params, err := gbtValidator.ValidateParams(flag.Args())
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -43,12 +63,12 @@ func pingRoutesBittrex() {
 	if !status {
 		fmt.Println("Unable to run command, check if command is valid:")
 		fmt.Println("")
-		fmt.Println("./GoBittrex getMarkets")
-		fmt.Println("./GoBittrex geCurrencies")
-		fmt.Println("./GoBittrex getTicks <coin_symbol>")
-		fmt.Println("./GoBittrex getOpenOrders <coin_symbol>")
-		fmt.Println("./GoBittrex startTrailing <coin_symbol> SL <sell_loss> TP <take_profit> TTP <trailing_take_profit>")
-		fmt.Println("./GoBittrex getOrderBook <coin_symbol>")
+		fmt.Println("./GoBittrex --cmd=getMarkets")
+		fmt.Println("./GoBittrex --cmd=geCurrencies")
+		fmt.Println("./GoBittrex --cmd=getTicks <coin_symbol>")
+		fmt.Println("./GoBittrex --cmd=getOpenOrders <coin_symbol>")
+		fmt.Println("./GoBittrex --cmd=startTrailing <coin_symbol> SL <sell_loss> TP <take_profit> TTP <trailing_take_profit>")
+		fmt.Println("./GoBittrex --cmd=getOrderBook <coin_symbol>")
 		fmt.Println("")
 	} else {
 		fmt.Println("Status: OK'")
@@ -56,7 +76,7 @@ func pingRoutesBittrex() {
 }
 
 func pingRoutesCmc() {
-	cmd, params, err := gbtValidator.ValidateParams(os.Args)
+	cmd, params, err := gbtValidator.ValidateParams(flag.Args())
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -65,8 +85,8 @@ func pingRoutesCmc() {
 	if !status {
 		fmt.Println("Unable to run command, check if command is valid:")
 		fmt.Println("")
-		fmt.Println("./GoBittrex getCoinInfo <coin_symbol>")
-		fmt.Println("./GoBittrex getCoinsInfo <convert> <start> <limit>")
+		fmt.Println("./GoBittrex --cmd=getCoinInfo <coin_symbol>")
+		fmt.Println("./GoBittrex --cmd=getCoinsInfo <convert> <start> <limit>")
 		fmt.Println("")
 	} else {
 		fmt.Println("Status: OK'")
@@ -74,7 +94,7 @@ func pingRoutesCmc() {
 }
 
 func pingRoutesCmcal() {
-	cmd, params, err := gbtValidator.ValidateParams(os.Args)
+	cmd, params, err := gbtValidator.ValidateParams(flag.Args())
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -83,9 +103,9 @@ func pingRoutesCmcal() {
 	if !status {
 		fmt.Println("Unable to run command, check if command is valid:")
 		fmt.Println("")
-		fmt.Println("./GoBittrex getCmcalCoins")
-		fmt.Println("./GoBittrex getCmcalCategories")
-		fmt.Println("./GoBittrex getCmcalEvents")
+		fmt.Println("./GoBittrex --cmd=getCmcalCoins")
+		fmt.Println("./GoBittrex --cmd=getCmcalCategories")
+		fmt.Println("./GoBittrex --cmd=getCmcalEvents")
 		fmt.Println("")
 	} else {
 		fmt.Println("Status: OK'")
@@ -93,7 +113,7 @@ func pingRoutesCmcal() {
 }
 
 func pingRoutesFirebase() {
-	cmd, params, err := gbtValidator.ValidateParams(os.Args)
+	cmd, params, err := gbtValidator.ValidateParams(flag.Args())
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -102,7 +122,7 @@ func pingRoutesFirebase() {
 	if !status {
 		fmt.Println("Unable to run command, check if command is valid:")
 		fmt.Println("")
-		fmt.Println("./GoBittrex sendPush")
+		fmt.Println("./GoBittrex --cmd=sendPush")
 		fmt.Println("")
 	} else {
 		fmt.Println("Status: OK'")
@@ -110,7 +130,7 @@ func pingRoutesFirebase() {
 }
 
 func pingRoutesGeneral() {
-	cmd, params, err := gbtValidator.ValidateParams(os.Args)
+	cmd, params, err := gbtValidator.ValidateParams(flag.Args())
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -119,7 +139,7 @@ func pingRoutesGeneral() {
 	if !status {
 		fmt.Println("Unable to run command, check if command is valid:")
 		fmt.Println("")
-		fmt.Println("./GoBittrex runServer")
+		fmt.Println("./GoBittrex --cmd=runServer")
 		fmt.Println("")
 	} else {
 		fmt.Println("Status: OK'")
