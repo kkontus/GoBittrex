@@ -24,3 +24,6 @@ GoBittrex
 
 # creds
 service-account.json
+
+# vscode
+.vscode/*
