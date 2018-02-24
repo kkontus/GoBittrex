@@ -39,91 +39,11 @@ func GetData(url string, authRequired AuthType) {
 	}
 }
 
+// BITTREX
 func GetMarkets(url string, authRequired AuthType) {
 	err, decoder, resp := jsonDecode(url, authRequired)
 	defer resp.Body.Close()
-	getMarkets(err, decoder)
-}
 
-func GetCurrencies(url string, authRequired AuthType) {
-	err, decoder, resp := jsonDecode(url, authRequired)
-	defer resp.Body.Close()
-	getCurrencies(err, decoder)
-}
-
-func GetTicks(url string, authRequired AuthType) {
-	err, decoder, resp := jsonDecode(url, authRequired)
-	defer resp.Body.Close()
-	getTicksData(err, decoder)
-}
-
-func GetOpenOrders(url string, authRequired AuthType) {
-	err, decoder, resp := jsonDecode(url, authRequired)
-	defer resp.Body.Close()
-	getOpenOrdersData(err, decoder)
-}
-
-func GetOrderBook(url string, authRequired AuthType) {
-	err, decoder, resp := jsonDecode(url, authRequired)
-	defer resp.Body.Close()
-	getOrderBookData(err, decoder)
-}
-
-// COINMARKETCAP
-func GetCmcInfo(url string, authRequired AuthType) (info interface{}, err error) {
-	err, decoder, resp := jsonDecode(url, authRequired)
-	defer resp.Body.Close()
-	return getCmcInfo(err, decoder)
-}
-
-// COINMARKETCAP
-func getCmcInfo(err error, decoder *json.Decoder) (info interface{}, error error) {
-	var responseData []gbtEntity.CmcCoinInfo
-	err = decoder.Decode(&responseData)
-	if err != nil {
-		return nil, err
-	} else {
-		return responseData, nil
-	}
-}
-
-// COINMARKETCAL
-func GetCmcalCoins(url string, authRequired AuthType) (info interface{}, err error) {
-	err, decoder, resp := jsonDecode(url, authRequired)
-	defer resp.Body.Close()
-	return getCmcalCoins(err, decoder)
-}
-
-// COINMARKETCAL (talk with guys from coinmarketcal if this can be changed to get json object, and parsed to struct)
-func getCmcalCoins(err error, decoder *json.Decoder) (info interface{}, error error) {
-	var responseData []string
-	err = decoder.Decode(&responseData)
-	if err != nil {
-		return nil, err
-	} else {
-		return responseData, nil
-	}
-}
-
-// COINMARKETCAL
-func GetCmcalCategories(url string, authRequired AuthType) (info interface{}, err error) {
-	err, decoder, resp := jsonDecode(url, authRequired)
-	defer resp.Body.Close()
-	return getCmcalCategories(err, decoder)
-}
-
-// COINMARKETCAL (talk with guys from coinmarketcal if this can be changed to get json object, and parsed to struct)
-func getCmcalCategories(err error, decoder *json.Decoder) (info interface{}, error error) {
-	var responseData []string
-	err = decoder.Decode(&responseData)
-	if err != nil {
-		return nil, err
-	} else {
-		return responseData, nil
-	}
-}
-
-func getMarkets(err error, decoder *json.Decoder) {
 	responseData := gbtEntity.MarketsResponse{} // or var responseData = gbtEntity.MarketsResponse{}
 	err = decoder.Decode(&responseData)
 	if err != nil {
@@ -137,7 +57,11 @@ func getMarkets(err error, decoder *json.Decoder) {
 	}
 }
 
-func getCurrencies(err error, decoder *json.Decoder) {
+// BITTREX
+func GetCurrencies(url string, authRequired AuthType) {
+	err, decoder, resp := jsonDecode(url, authRequired)
+	defer resp.Body.Close()
+
 	responseData := gbtEntity.CurrenciesResponse{} // or var responseData = gbtEntity.CurrenciesResponse{}
 	err = decoder.Decode(&responseData)
 	if err != nil {
@@ -151,7 +75,11 @@ func getCurrencies(err error, decoder *json.Decoder) {
 	}
 }
 
-func getTicksData(err error, decoder *json.Decoder) {
+// BITTREX
+func GetTicks(url string, authRequired AuthType) {
+	err, decoder, resp := jsonDecode(url, authRequired)
+	defer resp.Body.Close()
+
 	responseData := gbtEntity.TicksResponse{} // or var responseData = gbtEntity.TicksResponse{}
 	err = decoder.Decode(&responseData)
 	if err != nil {
@@ -165,7 +93,11 @@ func getTicksData(err error, decoder *json.Decoder) {
 	}
 }
 
-func getOpenOrdersData(err error, decoder *json.Decoder) {
+// BITTREX
+func GetOpenOrders(url string, authRequired AuthType) {
+	err, decoder, resp := jsonDecode(url, authRequired)
+	defer resp.Body.Close()
+
 	responseData := gbtEntity.OpenOrdersResponse{} // or var responseData = gbtEntity.OpenOrdersResponse{}
 	err = decoder.Decode(&responseData)
 	if err != nil {
@@ -179,7 +111,11 @@ func getOpenOrdersData(err error, decoder *json.Decoder) {
 	}
 }
 
-func getOrderBookData(err error, decoder *json.Decoder) {
+// BITTREX
+func GetOrderBook(url string, authRequired AuthType) {
+	err, decoder, resp := jsonDecode(url, authRequired)
+	defer resp.Body.Close()
+
 	responseData := gbtEntity.OrderBookResponse{} // or var responseData = gbtEntity.OpenOrdersResponse{}
 	err = decoder.Decode(&responseData)
 	if err != nil {
@@ -201,5 +137,47 @@ func getOrderBookData(err error, decoder *json.Decoder) {
 		for i, elem := range resultSell {
 			fmt.Printf("%d: %f %f\n", i, elem.Rate, elem.Quantity)
 		}
+	}
+}
+
+// COINMARKETCAP
+func GetCmcInfo(url string, authRequired AuthType) (info interface{}, err error) {
+	err, decoder, resp := jsonDecode(url, authRequired)
+	defer resp.Body.Close()
+
+	var responseData []gbtEntity.CmcCoinInfo
+	err = decoder.Decode(&responseData)
+	if err != nil {
+		return nil, err
+	} else {
+		return responseData, nil
+	}
+}
+
+// COINMARKETCAL
+func GetCmcalCoins(url string, authRequired AuthType) (info interface{}, err error) {
+	err, decoder, resp := jsonDecode(url, authRequired)
+	defer resp.Body.Close()
+
+	var responseData []string
+	err = decoder.Decode(&responseData)
+	if err != nil {
+		return nil, err
+	} else {
+		return responseData, nil
+	}
+}
+
+// COINMARKETCAL
+func GetCmcalCategories(url string, authRequired AuthType) (info interface{}, err error) {
+	err, decoder, resp := jsonDecode(url, authRequired)
+	defer resp.Body.Close()
+
+	var responseData []string
+	err = decoder.Decode(&responseData)
+	if err != nil {
+		return nil, err
+	} else {
+		return responseData, nil
 	}
 }

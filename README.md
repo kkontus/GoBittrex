@@ -18,8 +18,18 @@ $ ./GoBittrex --cmd=getCoinInfo <coin_symbol>
 $ ./GoBittrex --cmd=getCoinsInfo <convert> <start> <limit>
 $ ./GoBittrex --cmd=getCmcalCoins
 $ ./GoBittrex --cmd=getCmcalCategories
-$ ./GoBittrex --cmd=runServer"
+$ ./GoBittrex --cmd=runServer
 $ ./GoBittrex --cmd=sendPush // CryptocurrencyManager mobile app FCM token has to be supplied
+```
+
+```bash
+Examples with args
+run:
+$ ./GoBittrex --cmd=getTicks NEO
+$ ./GoBittrex --cmd=getOpenOrders NEO
+$ ./GoBittrex --cmd=getOrderBook NEO
+$ ./GoBittrex --cmd=getCoinInfo bitcoin
+$ ./GoBittrex --cmd=getCoinsInfo USD 0 5
 ```
 
 ```bash
