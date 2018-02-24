@@ -168,8 +168,9 @@ func validateGetCmcalCategoriesParams(cmd string, args []string) (command string
 }
 
 func validateGetCmcalEventsParams(cmd string, args []string) (command string, params interface{}, err error) {
-	if len(args) == 0 {
-		return cmd, nil, nil
+	if len(args) == 8 {
+		s := GetEventsParams{Start: args[0], Limit: args[1], DateStart: args[2], DateEnd: args[3], Coins: args[4], Categories: args[5], SortBy: args[6], ShowOnly: args[7]}
+		return cmd, s, nil
 	} else {
 		return cmd, nil, errors.New(fmt.Sprintf("%s unsupported parameters", cmd))
 	}

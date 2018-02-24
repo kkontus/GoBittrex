@@ -18,6 +18,7 @@ $ ./GoBittrex --cmd=getCoinInfo <coin_symbol>
 $ ./GoBittrex --cmd=getCoinsInfo <convert> <start> <limit>
 $ ./GoBittrex --cmd=getCmcalCoins
 $ ./GoBittrex --cmd=getCmcalCategories
+$ ./GoBittrex --cmd=getCmcalEvents <start> <limit> <date_start> <date_end> <'coin_name (coin_symbol),coin_name (coin_symbol)'> <'category1,category2'> <sort_by> <show_only>
 $ ./GoBittrex --cmd=runServer
 $ ./GoBittrex --cmd=sendPush // CryptocurrencyManager mobile app FCM token has to be supplied
 ```
@@ -30,6 +31,8 @@ $ ./GoBittrex --cmd=getOpenOrders NEO
 $ ./GoBittrex --cmd=getOrderBook NEO
 $ ./GoBittrex --cmd=getCoinInfo bitcoin
 $ ./GoBittrex --cmd=getCoinsInfo USD 0 5
+$ ./GoBittrex --cmd=getCmcalEvents 1 1 23/02/2018 25/02/2018 'Phore (PHR)' Rebranding hot_events hot_events
+$ ./GoBittrex --cmd=getCmcalEvents 1 3 23/02/2018 25/02/2018 'Phore (PHR),Worldcore (WRC)' 'Exchange,Rebranding' hot_events hot_events
 ```
 
 ```bash

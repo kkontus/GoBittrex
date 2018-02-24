@@ -181,3 +181,17 @@ func GetCmcalCategories(url string, authRequired AuthType) (info interface{}, er
 		return responseData, nil
 	}
 }
+
+// COINMARKETCAL
+func GetCmcalEvents(url string, authRequired AuthType) (info interface{}, err error) {
+	err, decoder, resp := jsonDecode(url, authRequired)
+	defer resp.Body.Close()
+
+	var responseData []gbtEntity.CmcalEvents
+	err = decoder.Decode(&responseData)
+	if err != nil {
+		return nil, err
+	} else {
+		return responseData, nil
+	}
+}
