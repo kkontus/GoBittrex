@@ -37,7 +37,7 @@ func SelectCoinmarketcapRoute(cmd string, args interface{}) bool {
 
 func getCoinInfo(coin string) {
 	URL := fmt.Sprintf("%s/ticker/%s/", gbtConfig.API_PATH_COINMARKETCAP, coin)
-	resp, err := gbtHttp.GetCmcInfo(URL, false)
+	resp, err := gbtHttp.GetCmcInfo(URL, gbtConfig.NONE)
 
 	if err != nil {
 		gbtError.ShowError(err)
@@ -65,7 +65,7 @@ func getCoinsInfo(convert string, start string, limit string) {
 		URL = fmt.Sprintf("%s&limit=%s", URL, limit)
 	}
 
-	resp, err := gbtHttp.GetCmcInfo(URL, false)
+	resp, err := gbtHttp.GetCmcInfo(URL, gbtConfig.NONE)
 
 	if err != nil {
 		gbtError.ShowError(err)
@@ -83,5 +83,5 @@ func getCoinsInfo(convert string, start string, limit string) {
 
 func GetCoinInfoAPI(coin string) (info interface{}, err error) {
 	URL := fmt.Sprintf("%s/ticker/%s/", gbtConfig.API_PATH_COINMARKETCAP, coin)
-	return gbtHttp.GetCmcInfo(URL, false)
+	return gbtHttp.GetCmcInfo(URL, gbtConfig.NONE)
 }

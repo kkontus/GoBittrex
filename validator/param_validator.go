@@ -4,11 +4,10 @@ import (
 	"errors"
 	"strconv"
 	"fmt"
-	"flag"
 )
 
-func ValidateParams(args []string) (command string, params interface{}, err error) {
-	cmd := flag.Lookup("cmd").Value.(flag.Getter).Get().(string)
+func ValidateParams(cmd string, args []string) (command string, params interface{}, err error) {
+	// cmd := flag.Lookup("cmd").Value.(flag.Getter).Get().(string)
 
 	switch cmd {
 	case "getMarkets":

@@ -8,9 +8,10 @@ import (
 	gbtUtil "GoBittrex/util"
 	gbtError "GoBittrex/error"
 	gbtEntity "GoBittrex/entity"
+	. "GoBittrex/config"
 )
 
-func jsonDecode(url string, authRequired bool) (error, *json.Decoder, *http.Response) {
+func jsonDecode(url string, authRequired AuthType) (error, *json.Decoder, *http.Response) {
 	//resp, err := http.Get(url)
 	resp, err := NewRequest(http.MethodGet, url, nil, authRequired)
 	if err != nil {
@@ -21,7 +22,7 @@ func jsonDecode(url string, authRequired bool) (error, *json.Decoder, *http.Resp
 	return err, decoder, resp
 }
 
-func GetData(url string, authRequired bool) {
+func GetData(url string, authRequired AuthType) {
 	// resp, err := http.Get(url)
 	resp, err := NewRequest(http.MethodGet, url, nil, authRequired)
 	if err != nil {
@@ -38,38 +39,38 @@ func GetData(url string, authRequired bool) {
 	}
 }
 
-func GetMarkets(url string, authRequired bool) {
+func GetMarkets(url string, authRequired AuthType) {
 	err, decoder, resp := jsonDecode(url, authRequired)
 	defer resp.Body.Close()
 	getMarkets(err, decoder)
 }
 
-func GetCurrencies(url string, authRequired bool) {
+func GetCurrencies(url string, authRequired AuthType) {
 	err, decoder, resp := jsonDecode(url, authRequired)
 	defer resp.Body.Close()
 	getCurrencies(err, decoder)
 }
 
-func GetTicks(url string, authRequired bool) {
+func GetTicks(url string, authRequired AuthType) {
 	err, decoder, resp := jsonDecode(url, authRequired)
 	defer resp.Body.Close()
 	getTicksData(err, decoder)
 }
 
-func GetOpenOrders(url string, authRequired bool) {
+func GetOpenOrders(url string, authRequired AuthType) {
 	err, decoder, resp := jsonDecode(url, authRequired)
 	defer resp.Body.Close()
 	getOpenOrdersData(err, decoder)
 }
 
-func GetOrderBook(url string, authRequired bool) {
+func GetOrderBook(url string, authRequired AuthType) {
 	err, decoder, resp := jsonDecode(url, authRequired)
 	defer resp.Body.Close()
 	getOrderBookData(err, decoder)
 }
 
 // COINMARKETCAP
-func GetCmcInfo(url string, authRequired bool) (info interface{}, err error) {
+func GetCmcInfo(url string, authRequired AuthType) (info interface{}, err error) {
 	err, decoder, resp := jsonDecode(url, authRequired)
 	defer resp.Body.Close()
 	return getCmcInfo(err, decoder)
@@ -87,7 +88,7 @@ func getCmcInfo(err error, decoder *json.Decoder) (info interface{}, error error
 }
 
 // COINMARKETCAL
-func GetCmcalCoins(url string, authRequired bool) (info interface{}, err error) {
+func GetCmcalCoins(url string, authRequired AuthType) (info interface{}, err error) {
 	err, decoder, resp := jsonDecode(url, authRequired)
 	defer resp.Body.Close()
 	return getCmcalCoins(err, decoder)
@@ -105,7 +106,7 @@ func getCmcalCoins(err error, decoder *json.Decoder) (info interface{}, error er
 }
 
 // COINMARKETCAL
-func GetCmcalCategories(url string, authRequired bool) (info interface{}, err error) {
+func GetCmcalCategories(url string, authRequired AuthType) (info interface{}, err error) {
 	err, decoder, resp := jsonDecode(url, authRequired)
 	defer resp.Body.Close()
 	return getCmcalCategories(err, decoder)

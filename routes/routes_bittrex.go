@@ -61,33 +61,33 @@ func getMarkets() {
 	//gbtHttp.GetData("https://bittrex.com/api/v1.1/public/getmarkets", false)
 	//URL := API_PATH + "/public/getmarkets"
 	URL := fmt.Sprintf("%s/public/getmarkets", gbtConfig.API_PATH)
-	gbtHttp.GetMarkets(URL, false)
+	gbtHttp.GetMarkets(URL, gbtConfig.NONE)
 }
 
 func getCurrencies() {
 	//gbtHttp.GetData("https://bittrex.com/api/v1.1/public/getcurrencies", false)
 	//URL := API_PATH + "/public/getcurrencies"
 	URL := fmt.Sprintf("%s/public/getcurrencies", gbtConfig.API_PATH)
-	gbtHttp.GetCurrencies(URL, false)
+	gbtHttp.GetCurrencies(URL, gbtConfig.NONE)
 }
 
 func getTickes(coin string) {
 	//gbtHttp.GetData(gbtConfig.API_PATH_V2+"/pub/market/GetTicks?marketName=BTC-"+coin+"&tickInterval=day&_="+gbtUtil.FormatInt(gbtUtil.GetTimestamp()), false)
 	//URL := gbtConfig.API_PATH_V2 + "/pub/market/GetTicks?marketName=BTC-" + coin + "&tickInterval=day&_=" + gbtUtil.FormatInt(gbtUtil.GetTimestamp())
 	URL := fmt.Sprintf("%s/pub/market/GetTicks?marketName=BTC-%s&tickInterval=day&_=%s", gbtConfig.API_PATH_V2, coin, gbtUtil.FormatInt(gbtUtil.GetTimestamp()))
-	gbtHttp.GetTicks(URL, false)
+	gbtHttp.GetTicks(URL, gbtConfig.NONE)
 }
 
 func getOpenOrders(coin string) {
 	URL := fmt.Sprintf("%s/market/getopenorders?apikey=%s&market=BTC-%s", gbtConfig.API_PATH, gbtConfig.API_KEY, coin)
-	gbtHttp.GetData(URL, true)
-	gbtHttp.GetOpenOrders(URL, true)
+	gbtHttp.GetData(URL, gbtConfig.BITTREX)
+	gbtHttp.GetOpenOrders(URL, gbtConfig.BITTREX)
 }
 
 func getOrderBook(coin string) {
 	URL := fmt.Sprintf("%s/public/getorderbook?market=BTC-%s&type=both", gbtConfig.API_PATH, coin)
 	// gbtHttp.GetData(URL, false)
-	gbtHttp.GetOrderBook(URL, false)
+	gbtHttp.GetOrderBook(URL, gbtConfig.NONE)
 }
 
 func startTrailing(coin string, SL float32, TP float32, TTP float32) {

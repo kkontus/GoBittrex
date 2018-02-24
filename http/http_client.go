@@ -8,14 +8,14 @@ import (
 	"crypto/sha512"
 	"encoding/hex"
 	"io"
-	gbtConfig "GoBittrex/config"
+	. "GoBittrex/config"
 )
 
 func createClient() *http.Client {
 	return &http.Client{}
 }
 
-func NewRequest(method string, url string, body io.Reader, authRequired bool) (response *http.Response, err error) {
+func NewRequest(method string, url string, body io.Reader, authRequired AuthType) (response *http.Response, err error) {
 	client := createClient()
 
 	req, err := http.NewRequest(method, url, body)
@@ -23,16 +23,18 @@ func NewRequest(method string, url string, body io.Reader, authRequired bool) (r
 		return nil, err
 	}
 
-	if authRequired {
+	if authRequired == BITTREX {
 		nonce := time.Now().UnixNano()
 		q := req.URL.Query()
-		q.Set("apikey", gbtConfig.API_KEY)
+		q.Set("apikey", API_KEY)
 		q.Set("nonce", fmt.Sprintf("%d", nonce))
 		req.URL.RawQuery = q.Encode()
-		mac := hmac.New(sha512.New, []byte(gbtConfig.API_SECRET))
+		mac := hmac.New(sha512.New, []byte(API_SECRET))
 		_, err = mac.Write([]byte(req.URL.String()))
 		sig := hex.EncodeToString(mac.Sum(nil))
 		req.Header.Add("apisign", sig)
+	} else if authRequired == NONE {
+
 	}
 
 	return client.Do(req)

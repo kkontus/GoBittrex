@@ -13,3 +13,8 @@ type Markets struct {
 	IsSponsored        bool    `json:"IsSponsored"`
 	LogoUrl            string  `json:"LogoUrl"`
 }
+
+type MarketsResponse struct {
+	ResponseGeneric
+	Result []Markets `json:"result"`
+}

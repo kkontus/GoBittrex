@@ -9,3 +9,8 @@ type Historical struct {
 	Timestamp  string  `json:"T"`
 	BaseVolume float32 `json:"BV"`
 }
+
+type TicksResponse struct {
+	ResponseGeneric
+	Result []Historical `json:"result"`
+}

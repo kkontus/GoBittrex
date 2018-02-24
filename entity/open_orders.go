@@ -18,3 +18,8 @@ type OpenOrders struct {
 	Condition         string  `json:"Condition"`
 	ConditionTarget   string  `json:"ConditionTarget"`
 }
+
+type OpenOrdersResponse struct {
+	ResponseGeneric
+	Result []OpenOrders `json:"result"`
+}

@@ -23,15 +23,15 @@ func main() {
 	cmdPtr := parseFlags()
 
 	if gbtUtil.Contains(routesBittrex, *cmdPtr) {
-		pingRoutesBittrex()
+		pingRoutesBittrex(*cmdPtr)
 	} else if gbtUtil.Contains(routesCmc, *cmdPtr) {
-		pingRoutesCmc()
+		pingRoutesCmc(*cmdPtr)
 	} else if gbtUtil.Contains(routesCmcal, *cmdPtr) {
-		pingRoutesCmcal()
+		pingRoutesCmcal(*cmdPtr)
 	} else if gbtUtil.Contains(routesFirebase, *cmdPtr) {
-		pingRoutesFirebase()
+		pingRoutesFirebase(*cmdPtr)
 	} else if gbtUtil.Contains(routesGeneral, *cmdPtr) {
-		pingRoutesGeneral()
+		pingRoutesGeneral(*cmdPtr)
 	} else {
 		fmt.Println("Route Slice does not contain the element, check if route is added to config", flag.Arg(0))
 	}
@@ -53,8 +53,8 @@ func parseFlags() *string {
 	return cmdPtr
 }
 
-func pingRoutesBittrex() {
-	cmd, params, err := gbtValidator.ValidateParams(flag.Args())
+func pingRoutesBittrex(cmd string) {
+	cmd, params, err := gbtValidator.ValidateParams(cmd, flag.Args())
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -75,8 +75,8 @@ func pingRoutesBittrex() {
 	}
 }
 
-func pingRoutesCmc() {
-	cmd, params, err := gbtValidator.ValidateParams(flag.Args())
+func pingRoutesCmc(cmd string) {
+	cmd, params, err := gbtValidator.ValidateParams(cmd, flag.Args())
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -93,8 +93,8 @@ func pingRoutesCmc() {
 	}
 }
 
-func pingRoutesCmcal() {
-	cmd, params, err := gbtValidator.ValidateParams(flag.Args())
+func pingRoutesCmcal(cmd string) {
+	cmd, params, err := gbtValidator.ValidateParams(cmd, flag.Args())
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -112,8 +112,8 @@ func pingRoutesCmcal() {
 	}
 }
 
-func pingRoutesFirebase() {
-	cmd, params, err := gbtValidator.ValidateParams(flag.Args())
+func pingRoutesFirebase(cmd string) {
+	cmd, params, err := gbtValidator.ValidateParams(cmd, flag.Args())
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -129,8 +129,8 @@ func pingRoutesFirebase() {
 	}
 }
 
-func pingRoutesGeneral() {
-	cmd, params, err := gbtValidator.ValidateParams(flag.Args())
+func pingRoutesGeneral(cmd string) {
+	cmd, params, err := gbtValidator.ValidateParams(cmd, flag.Args())
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)

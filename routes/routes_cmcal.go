@@ -27,7 +27,7 @@ func SelectCoinmarketcalRoute(cmd string, args interface{}) bool {
 
 func getCmcalCoins() {
 	URL := fmt.Sprintf("%s/coins", gbtConfig.API_PATH_COINMARKETCAL)
-	resp, err := gbtHttp.GetCmcalCoins(URL, false)
+	resp, err := gbtHttp.GetCmcalCoins(URL, gbtConfig.NONE)
 
 	if err != nil {
 		gbtError.ShowError(err)
@@ -45,7 +45,7 @@ func getCmcalCoins() {
 
 func getCmcalCategories() {
 	URL := fmt.Sprintf("%s/categories", gbtConfig.API_PATH_COINMARKETCAL)
-	resp, err := gbtHttp.GetCmcalCategories(URL, false)
+	resp, err := gbtHttp.GetCmcalCategories(URL, gbtConfig.NONE)
 
 	if err != nil {
 		gbtError.ShowError(err)

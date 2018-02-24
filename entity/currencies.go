@@ -9,3 +9,8 @@ type Currencies struct {
 	CoinType        string  `json:"CoinType"`
 	BaseAddress     string  `json:"BaseAddress"`
 }
+
+type CurrenciesResponse struct {
+	ResponseGeneric
+	Result []Currencies `json:"result"`
+}
