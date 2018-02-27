@@ -21,6 +21,7 @@ $ ./GoBittrex --cmd=getCmcalCategories
 $ ./GoBittrex --cmd=getCmcalEvents <start> <limit> <date_start> <date_end> <'coin_name (coin_symbol),coin_name (coin_symbol)'> <'category1,category2'> <sort_by> <show_only>
 $ ./GoBittrex --cmd=runServer
 $ ./GoBittrex --cmd=sendPush // CryptocurrencyManager mobile app FCM token has to be supplied
+$ ./GoBittrex --cmd=startRealtimeDatabase
 ```
 
 ```bash
