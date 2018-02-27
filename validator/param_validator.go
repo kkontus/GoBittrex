@@ -26,6 +26,8 @@ func ValidateParams(cmd string, args []string) (command string, params interface
 		return validateRunServerParams(cmd, args)
 	case "sendPush":
 		return validateSendPushParams(cmd, args)
+	case "startRealtimeDatabase":
+		return validateStartRealtimeDatabaseParams(cmd, args)
 	case "getCoinInfo":
 		return validateGetCoinInfoParams(cmd, args)
 	case "getCoinsInfo":
@@ -123,6 +125,14 @@ func validateRunServerParams(cmd string, args []string) (command string, params 
 }
 
 func validateSendPushParams(cmd string, args []string) (command string, params interface{}, err error) {
+	if len(args) == 0 {
+		return cmd, nil, nil
+	} else {
+		return cmd, nil, errors.New(fmt.Sprintf("%s unsupported parameters", cmd))
+	}
+}
+
+func validateStartRealtimeDatabaseParams(cmd string, args []string) (command string, params interface{}, err error) {
 	if len(args) == 0 {
 		return cmd, nil, nil
 	} else {

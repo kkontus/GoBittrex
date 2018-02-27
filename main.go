@@ -123,6 +123,7 @@ func pingRoutesFirebase(cmd string) {
 		fmt.Println("Unable to run command, check if command is valid:")
 		fmt.Println("")
 		fmt.Println("./GoBittrex --cmd=sendPush")
+		fmt.Println("./GoBittrex --cmd=startRealtimeDatabase")
 		fmt.Println("")
 	} else {
 		fmt.Println("Status: OK'")

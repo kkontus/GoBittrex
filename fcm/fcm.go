@@ -19,7 +19,9 @@ func NewRequestFcm(method string, url string, body io.Reader) (response *http.Re
 		return nil, err
 	}
 
-	conf, err := google.JWTConfigFromJSON(cred, "https://www.googleapis.com/auth/firebase.messaging")
+	conf, err := google.JWTConfigFromJSON(cred, "https://www.googleapis.com/auth/userinfo.email",
+		"https://www.googleapis.com/auth/firebase.messaging",
+		"https://www.googleapis.com/auth/firebase.database")
 	if err != nil {
 		return nil, err
 	}
@@ -70,6 +72,7 @@ func SendPush(useLegacyApi bool) {
 		handleResponse(err, resp)
 	}
 }
+
 func handleResponse(err error, resp *http.Response) {
 	if err != nil {
 		gbtError.ShowError(err)

@@ -10,6 +10,9 @@ func SelectFirebaseRoute(cmd string, args interface{}) bool {
 	case "sendPush":
 		sendPush()
 		status = true
+	case "startRealtimeDatabase":
+		startRealtimeDatabase()
+		status = true
 	default:
 		status = false
 	}
@@ -18,4 +21,8 @@ func SelectFirebaseRoute(cmd string, args interface{}) bool {
 
 func sendPush() {
 	gbtFcm.SendPush(false) // refactor this to send message instead hardcoded data
+}
+
+func startRealtimeDatabase() {
+	gbtFcm.RealtimeDB()
 }
