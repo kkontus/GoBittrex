@@ -1,10 +1,11 @@
-package fcm
+package databases
 
 import (
 	"fmt"
 	"bytes"
 	"net/http"
 	"io/ioutil"
+	gbtFcm "GoBittrex/fcm"
 	gbtConfig "GoBittrex/config"
 	gbtError "GoBittrex/error"
 	gbtUtil "GoBittrex/util"
@@ -12,7 +13,7 @@ import (
 
 func RealtimeDB() {
 	URL := fmt.Sprintf("%s", gbtConfig.FCM_REALTIME_CREDS)
-	resp, err := NewRequestFcm(http.MethodGet, URL, nil)
+	resp, err := gbtFcm.NewRequestFcm(http.MethodGet, URL, nil)
 
 	handleResponseRealtimeDB(err, resp)
 
@@ -42,13 +43,13 @@ func saveCurrencies() {
 	URL := "https://crypto-curr-exch.firebaseio.com/currencies.json"
 	body := []byte(postExample())
 
-	resp, err := NewRequestFcm(http.MethodPost, URL, bytes.NewBuffer(body))
+	resp, err := gbtFcm.NewRequestFcm(http.MethodPost, URL, bytes.NewBuffer(body))
 	handleResponseRealtimeDB(err, resp)
 }
 
 func fetchCurrencies() {
 	URL := "https://crypto-curr-exch.firebaseio.com/currencies.json"
-	resp, err := NewRequestFcm(http.MethodGet, URL, nil)
+	resp, err := gbtFcm.NewRequestFcm(http.MethodGet, URL, nil)
 	handleResponseRealtimeDB(err, resp)
 }
 

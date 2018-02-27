@@ -1,6 +1,7 @@
 package routes
 
 import (
+	gbtFcmDb "GoBittrex/databases"
 	gbtFcm "GoBittrex/fcm"
 )
 
@@ -24,5 +25,5 @@ func sendPush() {
 }
 
 func startRealtimeDatabase() {
-	gbtFcm.RealtimeDB()
+	gbtFcmDb.RealtimeDB()
 }
