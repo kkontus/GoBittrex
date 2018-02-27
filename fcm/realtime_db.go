@@ -2,6 +2,7 @@ package fcm
 
 import (
 	"fmt"
+	"bytes"
 	"net/http"
 	"io/ioutil"
 	gbtConfig "GoBittrex/config"
@@ -15,7 +16,8 @@ func RealtimeDB() {
 
 	handleResponseRealtimeDB(err, resp)
 
-	fetchCurrencies(URL, resp, err)
+	saveCurrencies()
+	fetchCurrencies()
 }
 
 func handleResponseRealtimeDB(err error, resp *http.Response) {
@@ -36,8 +38,26 @@ func handleResponseRealtimeDB(err error, resp *http.Response) {
 	}
 }
 
-func fetchCurrencies(URL string, resp *http.Response, err error) {
-	URL = "https://crypto-curr-exch.firebaseio.com/currencies.json"
-	resp, err = NewRequestFcm(http.MethodGet, URL, nil)
+func saveCurrencies() {
+	URL := "https://crypto-curr-exch.firebaseio.com/currencies.json"
+	body := []byte(postExample())
+
+	resp, err := NewRequestFcm(http.MethodPost, URL, bytes.NewBuffer(body))
 	handleResponseRealtimeDB(err, resp)
+}
+
+func fetchCurrencies() {
+	URL := "https://crypto-curr-exch.firebaseio.com/currencies.json"
+	resp, err := NewRequestFcm(http.MethodGet, URL, nil)
+	handleResponseRealtimeDB(err, resp)
+}
+
+func postExample() string {
+	json := `{
+  				"description": "Not so good coin",
+				"id": "ripple",
+ 				"title": "Ripple"
+			}`
+
+	return json
 }
