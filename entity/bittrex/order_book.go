@@ -1,4 +1,4 @@
-package entity
+package bittrex
 
 type OrderBook struct {
 	Buy  []Order `json:"buy"`

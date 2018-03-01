@@ -1,4 +1,4 @@
-package entity
+package bittrex
 
 type Historical struct {
 	Open       float32 `json:"O"`

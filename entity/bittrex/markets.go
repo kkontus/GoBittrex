@@ -1,4 +1,4 @@
-package entity
+package bittrex
 
 type Markets struct {
 	MarketCurrency     string  `json:"MarketCurrency"`

@@ -1,4 +1,4 @@
-package entity
+package cmc
 
 type CmcCoinInfo struct {
 	Id               string `json:"id"`

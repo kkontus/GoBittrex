@@ -1,4 +1,4 @@
-package entity
+package bittrex
 
 type OpenOrders struct {
 	OrderUuid         string  `json:"OrderUuid"`

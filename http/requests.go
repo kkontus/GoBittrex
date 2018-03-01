@@ -7,7 +7,9 @@ import (
 	"encoding/json"
 	gbtUtil "GoBittrex/util"
 	gbtError "GoBittrex/error"
-	gbtEntity "GoBittrex/entity"
+	gbtCmcal "GoBittrex/entity/cmcal"
+	gbtCmc "GoBittrex/entity/cmc"
+	gbtBittrex "GoBittrex/entity/bittrex"
 	. "GoBittrex/config"
 )
 
@@ -44,7 +46,7 @@ func GetMarkets(url string, authRequired AuthType) {
 	err, decoder, resp := jsonDecode(url, authRequired)
 	defer resp.Body.Close()
 
-	responseData := gbtEntity.MarketsResponse{} // or var responseData = gbtEntity.MarketsResponse{}
+	responseData := gbtBittrex.MarketsResponse{} // or var responseData = gbtEntity.MarketsResponse{}
 	err = decoder.Decode(&responseData)
 	if err != nil {
 		gbtError.ShowError(err)
@@ -62,7 +64,7 @@ func GetCurrencies(url string, authRequired AuthType) {
 	err, decoder, resp := jsonDecode(url, authRequired)
 	defer resp.Body.Close()
 
-	responseData := gbtEntity.CurrenciesResponse{} // or var responseData = gbtEntity.CurrenciesResponse{}
+	responseData := gbtBittrex.CurrenciesResponse{} // or var responseData = gbtEntity.CurrenciesResponse{}
 	err = decoder.Decode(&responseData)
 	if err != nil {
 		gbtError.ShowError(err)
@@ -80,7 +82,7 @@ func GetTicks(url string, authRequired AuthType) {
 	err, decoder, resp := jsonDecode(url, authRequired)
 	defer resp.Body.Close()
 
-	responseData := gbtEntity.TicksResponse{} // or var responseData = gbtEntity.TicksResponse{}
+	responseData := gbtBittrex.TicksResponse{} // or var responseData = gbtEntity.TicksResponse{}
 	err = decoder.Decode(&responseData)
 	if err != nil {
 		gbtError.ShowError(err)
@@ -98,7 +100,7 @@ func GetOpenOrders(url string, authRequired AuthType) {
 	err, decoder, resp := jsonDecode(url, authRequired)
 	defer resp.Body.Close()
 
-	responseData := gbtEntity.OpenOrdersResponse{} // or var responseData = gbtEntity.OpenOrdersResponse{}
+	responseData := gbtBittrex.OpenOrdersResponse{} // or var responseData = gbtEntity.OpenOrdersResponse{}
 	err = decoder.Decode(&responseData)
 	if err != nil {
 		gbtError.ShowError(err)
@@ -116,7 +118,7 @@ func GetOrderBook(url string, authRequired AuthType) {
 	err, decoder, resp := jsonDecode(url, authRequired)
 	defer resp.Body.Close()
 
-	responseData := gbtEntity.OrderBookResponse{} // or var responseData = gbtEntity.OpenOrdersResponse{}
+	responseData := gbtBittrex.OrderBookResponse{} // or var responseData = gbtEntity.OpenOrdersResponse{}
 	err = decoder.Decode(&responseData)
 	if err != nil {
 		gbtError.ShowError(err)
@@ -145,7 +147,7 @@ func GetCmcInfo(url string, authRequired AuthType) (info interface{}, err error)
 	err, decoder, resp := jsonDecode(url, authRequired)
 	defer resp.Body.Close()
 
-	var responseData []gbtEntity.CmcCoinInfo
+	var responseData []gbtCmc.CmcCoinInfo
 	err = decoder.Decode(&responseData)
 	if err != nil {
 		return nil, err
@@ -187,7 +189,7 @@ func GetCmcalEvents(url string, authRequired AuthType) (info interface{}, err er
 	err, decoder, resp := jsonDecode(url, authRequired)
 	defer resp.Body.Close()
 
-	var responseData []gbtEntity.CmcalEvents
+	var responseData []gbtCmcal.CmcalEvents
 	err = decoder.Decode(&responseData)
 	if err != nil {
 		return nil, err

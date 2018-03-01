@@ -1,8 +1,10 @@
 package routes
 
 import (
+	"fmt"
 	gbtFcmDb "GoBittrex/databases"
 	gbtFcm "GoBittrex/fcm"
+	gbtError "GoBittrex/error"
 )
 
 func SelectFirebaseRoute(cmd string, args interface{}) bool {
@@ -25,5 +27,16 @@ func sendPush() {
 }
 
 func startRealtimeDatabase() {
-	gbtFcmDb.RealtimeDB()
+	//gbtFcmDb.RealtimeDb()
+
+	client, err := gbtFcmDb.RealtimeDbClient()
+	if err != nil {
+		gbtError.ShowError(err)
+	} else {
+		fmt.Println("Connection successful.")
+	}
+
+	gbtFcmDb.GetCurrencies(client)
+	gbtFcmDb.GetUsers(client)
+
 }

@@ -5,7 +5,7 @@ import (
 	gbtHttp "GoBittrex/http"
 	gbtConfig "GoBittrex/config"
 	gbtValidator "GoBittrex/validator"
-	gbtEntity "GoBittrex/entity"
+	gbtEntity "GoBittrex/entity/cmc"
 	gbtError "GoBittrex/error"
 	gbtUtil "GoBittrex/util"
 )

@@ -3,7 +3,7 @@ package routes
 import (
 	gbtConfig "GoBittrex/config"
 	gbtCryptoDb "GoBittrex/databases"
-	gbtEntity "GoBittrex/entity"
+	gbtEntity "GoBittrex/entity/cmc"
 	gbtError "GoBittrex/error"
 	"database/sql"
 	"fmt"

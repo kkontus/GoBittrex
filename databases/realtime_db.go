@@ -5,13 +5,65 @@ import (
 	"bytes"
 	"net/http"
 	"io/ioutil"
+	"firebase.google.com/go"
+	"golang.org/x/net/context"
+	"google.golang.org/api/option"
+	"firebase.google.com/go/db"
 	gbtFcm "GoBittrex/fcm"
 	gbtConfig "GoBittrex/config"
 	gbtError "GoBittrex/error"
 	gbtUtil "GoBittrex/util"
+	gbtEntity "GoBittrex/entity/frd"
 )
 
-func RealtimeDB() {
+func RealtimeDbClient() (*db.Client, error) {
+	ctx := context.Background()
+	conf := &firebase.Config{
+		DatabaseURL: gbtConfig.FCM_DATABASE_URL,
+	}
+	// Fetch the service account key JSON file contents
+	opt := option.WithCredentialsFile(gbtConfig.FCM_CREDS)
+
+	// Initialize the app with a service account, granting admin privileges
+	app, err := firebase.NewApp(ctx, conf, opt)
+	if err != nil {
+		gbtError.ShowError(err)
+	}
+
+	client, err := app.Database(ctx)
+
+	return client, err
+
+}
+func GetUsers(client *db.Client) {
+	// get users
+	ctx := context.Background()
+	refUsers := client.NewRef("users")
+	var users map[string]gbtEntity.UserProfile
+	err := refUsers.Get(ctx, &users)
+	if err != nil {
+		gbtError.ShowError(err)
+	}
+	for k, v := range users {
+		fmt.Println("k: ", k, "v: ", v.UserProfile.Email)
+	}
+}
+func GetCurrencies(client *db.Client) error {
+	// get currencies
+	ctx := context.Background()
+	refCurr := client.NewRef("currencies")
+	var currencies map[string]gbtEntity.Currency
+	err := refCurr.Get(ctx, &currencies)
+	if err != nil {
+		gbtError.ShowError(err)
+	}
+	for k, v := range currencies {
+		fmt.Println("k: ", k, "v: ", v.Title)
+	}
+	return err
+}
+
+func RealtimeDb() {
 	URL := fmt.Sprintf("%s", gbtConfig.FCM_REALTIME_CREDS)
 	resp, err := gbtFcm.NewRequestFcm(http.MethodGet, URL, nil)
 

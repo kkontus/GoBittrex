@@ -7,7 +7,7 @@ import (
 	gbtConfig "GoBittrex/config"
 	gbtError "GoBittrex/error"
 	gbtValidator "GoBittrex/validator"
-	gbtEntity "GoBittrex/entity"
+	gbtEntity "GoBittrex/entity/cmcal"
 )
 
 func SelectCoinmarketcalRoute(cmd string, args interface{}) bool {

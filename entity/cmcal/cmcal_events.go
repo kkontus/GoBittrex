@@ -1,4 +1,4 @@
-package entity
+package cmcal
 
 type CmcalEvents struct {
 	Id                int        `json:"id"`
