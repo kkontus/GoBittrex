@@ -36,6 +36,8 @@ func startRealtimeDatabase() {
 		fmt.Println("Connection successful.")
 	}
 
+	//gbtFcmDb.SetUsers(client)
+	//gbtFcmDb.SetCurrencies(client)
 	gbtFcmDb.GetCurrencies(client)
 	gbtFcmDb.GetUsers(client)
 

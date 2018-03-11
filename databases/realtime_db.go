@@ -9,6 +9,8 @@ import (
 	"golang.org/x/net/context"
 	"google.golang.org/api/option"
 	"firebase.google.com/go/db"
+	"firebase.google.com/go/auth"
+	"log"
 	gbtFcm "GoBittrex/fcm"
 	gbtConfig "GoBittrex/config"
 	gbtError "GoBittrex/error"
@@ -33,8 +35,27 @@ func RealtimeDbClient() (*db.Client, error) {
 	client, err := app.Database(ctx)
 
 	return client, err
-
 }
+
+func RealtimeAuthClient() (*auth.Client, error) {
+	ctx := context.Background()
+	conf := &firebase.Config{
+		DatabaseURL: gbtConfig.FCM_DATABASE_URL,
+	}
+	// Fetch the service account key JSON file contents
+	opt := option.WithCredentialsFile(gbtConfig.FCM_CREDS)
+
+	// Initialize the app with a service account, granting admin privileges
+	app, err := firebase.NewApp(ctx, conf, opt)
+	if err != nil {
+		gbtError.ShowError(err)
+	}
+
+	client, err := app.Auth(ctx)
+
+	return client, err
+}
+
 func GetUsers(client *db.Client) {
 	// get users
 	ctx := context.Background()
@@ -48,6 +69,7 @@ func GetUsers(client *db.Client) {
 		fmt.Println("k: ", k, "v: ", v.UserProfile.Email)
 	}
 }
+
 func GetCurrencies(client *db.Client) error {
 	// get currencies
 	ctx := context.Background()
@@ -61,6 +83,54 @@ func GetCurrencies(client *db.Client) error {
 		fmt.Println("k: ", k, "v: ", v.Title)
 	}
 	return err
+}
+
+func SetUsers(client *db.Client) {
+	ctx := context.Background()
+	refUsers := client.NewRef("users")
+
+	u := gbtEntity.User{
+		Email:     "kristijan.kontus@gmail.com",
+		Firstname: "Kristijan",
+		Lastname:  "Kontus",
+		Username:  "kkontus"}
+
+	up := gbtEntity.UserProfile{UserProfile: u}
+
+	fmt.Println(u)
+	fmt.Println(up)
+
+	clientAuth, err := RealtimeAuthClient()
+
+	ur, err := clientAuth.GetUserByEmail(ctx, u.Email)
+	if err != nil {
+		log.Fatalf("Error getting user by email %s: %v\n", u.Email, err)
+	}
+	log.Printf("Successfully fetched user data: %v\n", ur)
+
+	if err := refUsers.Child(ur.UID).Set(ctx, up); err != nil {
+		log.Fatalln("Error setting value:", err)
+	}
+
+}
+
+func SetCurrencies(client *db.Client) {
+	ctx := context.Background()
+	refCurrencies := client.NewRef("currencies")
+
+	c := gbtEntity.Currency{
+		Id: "metal",
+		//Title:    "Metal",
+		Symbol:      "MTL",
+		Name:        "Metal",
+		Description: "Metal is PPoP cryptocurrency....."}
+
+	fmt.Println(c)
+
+	if err := refCurrencies.Child("dgr3jJDHAGtvdfv43arg").Set(ctx, c); err != nil {
+		log.Fatalln("Error setting value VVVV:", err)
+	}
+
 }
 
 func RealtimeDb() {
