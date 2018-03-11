@@ -10,7 +10,7 @@ const (
 	API_PATH_V2               = API_BASE + API_VERSION_V2
 	FCM_URL                   = "https://fcm.googleapis.com/v1/projects/%s/messages:send"
 	FCM_PROJECT               = "xxxxx"
-	FCM_DATABASE_URL		  = "https://" + FCM_PROJECT + ".firebaseio.com"
+	FCM_DATABASE_URL          = "https://" + FCM_PROJECT + ".firebaseio.com"
 	FCM_CREDS                 = "service-account.json"
 	FCM_REALTIME_CREDS        = FCM_DATABASE_URL + "/restricted.json"
 	FCM_URL_LEGACY            = "https://fcm.googleapis.com/fcm/send"     // when using legacy HTTP POST
@@ -36,4 +36,4 @@ var RoutesBittrex = []string{"getMarkets", "getCurrencies", "getTicks", "getOpen
 var RoutesCmc = []string{"getCoinInfo", "getCoinsInfo"}
 var RoutesCmcal = []string{"getCmcalCoins", "getCmcalCategories", "getCmcalEvents"}
 var RoutesFirebase = []string{"sendPush", "startRealtimeDatabase"}
-var RoutesGeneral = []string{"runServer"}
+var RoutesGeneral = []string{"runServer", "runTradingBot"}

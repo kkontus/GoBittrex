@@ -7,6 +7,7 @@ import (
 	"errors"
 	gbtRoutes "GoBittrex/routes"
 	gbtValidator "GoBittrex/validator"
+	gbtTalgoValidator "GoBittrex/talgo"
 	gbtUtil "GoBittrex/util"
 	gbtConfig "GoBittrex/config"
 )
@@ -38,7 +39,11 @@ func main() {
 }
 
 func parseFlags() *string {
-	cmdPtr := flag.String("cmd", "", "command")
+	// define flags
+	cmdPtr := flag.String(gbtConfig.CMD, "", "command")
+	flag.String(gbtConfig.STRATEGY, "", "strategy")
+	flag.String(gbtConfig.EXCH, "", "exchange")
+
 	flag.Parse()
 
 	fmt.Println("cmd: ", *cmdPtr)
@@ -131,7 +136,16 @@ func pingRoutesFirebase(cmd string) {
 }
 
 func pingRoutesGeneral(cmd string) {
-	cmd, params, err := gbtValidator.ValidateParams(cmd, flag.Args())
+	var params interface{}
+	var err error
+	if cmd == "runTradingBot" {
+		strategy := flag.Lookup(gbtConfig.STRATEGY).Value.(flag.Getter).Get().(string)
+		exch := flag.Lookup(gbtConfig.EXCH).Value.(flag.Getter).Get().(string)
+		cmd, params, err = gbtTalgoValidator.ValidateParams(cmd, strategy, exch, flag.Args())
+	} else {
+		cmd, params, err = gbtValidator.ValidateParams(cmd, flag.Args())
+	}
+
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -141,6 +155,7 @@ func pingRoutesGeneral(cmd string) {
 		fmt.Println("Unable to run command, check if command is valid:")
 		fmt.Println("")
 		fmt.Println("./GoBittrex --cmd=runServer")
+		fmt.Println("./GoBittrex --cmd=runTradingBot --strategy=<strategy> --exch=<exchange> <coin_symbol> <timespan> <pips>")
 		fmt.Println("")
 	} else {
 		fmt.Println("Status: OK'")

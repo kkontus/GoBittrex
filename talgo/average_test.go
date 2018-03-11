@@ -1,7 +1,7 @@
-package falgo_test
+package talgo_test
 
 import (
-	. "GoBittrex/falgo"
+	. "GoBittrex/talgo"
 	"testing"
 	"reflect"
 )

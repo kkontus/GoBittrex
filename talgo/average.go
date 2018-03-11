@@ -1,4 +1,4 @@
-package falgo
+package talgo
 
 func Average(l []float64, h []float64) []float64 {
 	return avgSlices(l, h)
