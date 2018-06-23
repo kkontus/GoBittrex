@@ -1,6 +1,6 @@
 package talgo
 
-type Fibb struct {
+type Fib struct {
 	Coin     string
 	Exchange string
 }

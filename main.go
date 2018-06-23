@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"flag"
 	"errors"
 	gbtRoutes "GoBittrex/routes"
@@ -10,6 +9,7 @@ import (
 	gbtTalgoValidator "GoBittrex/talgo"
 	gbtUtil "GoBittrex/util"
 	gbtConfig "GoBittrex/config"
+	gbtError "GoBittrex/error"
 )
 
 func main() {
@@ -50,9 +50,7 @@ func parseFlags() *string {
 	fmt.Println(flag.Args())
 
 	if (*cmdPtr == "") {
-		err := errors.New("command parameter must be set")
-		fmt.Println(err)
-		os.Exit(1)
+		gbtError.ShowError(errors.New("command parameter must be set"))
 	}
 
 	return cmdPtr
@@ -61,8 +59,7 @@ func parseFlags() *string {
 func pingRoutesBittrex(cmd string) {
 	cmd, params, err := gbtValidator.ValidateParams(cmd, flag.Args())
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		gbtError.ShowError(err)
 	}
 	status := gbtRoutes.SelectBittrexRoute(cmd, params)
 	if !status {
@@ -85,8 +82,7 @@ func pingRoutesBittrex(cmd string) {
 func pingRoutesCmc(cmd string) {
 	cmd, params, err := gbtValidator.ValidateParams(cmd, flag.Args())
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		gbtError.ShowError(err)
 	}
 	status := gbtRoutes.SelectCoinmarketcapRoute(cmd, params)
 	if !status {
@@ -103,8 +99,7 @@ func pingRoutesCmc(cmd string) {
 func pingRoutesCmcal(cmd string) {
 	cmd, params, err := gbtValidator.ValidateParams(cmd, flag.Args())
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		gbtError.ShowError(err)
 	}
 	status := gbtRoutes.SelectCoinmarketcalRoute(cmd, params)
 	if !status {
@@ -122,8 +117,7 @@ func pingRoutesCmcal(cmd string) {
 func pingRoutesFirebase(cmd string) {
 	cmd, params, err := gbtValidator.ValidateParams(cmd, flag.Args())
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		gbtError.ShowError(err)
 	}
 	status := gbtRoutes.SelectFirebaseRoute(cmd, params)
 	if !status {
@@ -149,8 +143,7 @@ func pingRoutesGeneral(cmd string) {
 	}
 
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		gbtError.ShowError(err)
 	}
 	status := gbtRoutes.SelectGeneralRoute(cmd, params)
 	if !status {
@@ -158,6 +151,7 @@ func pingRoutesGeneral(cmd string) {
 		fmt.Println("")
 		fmt.Println("./GoBittrex --cmd=runServer")
 		fmt.Println("./GoBittrex --cmd=runTradingBot --strategy=<strategy> --exch=<exchange> <coin_symbol> <timespan> <pips>")
+		fmt.Println("./GoBittrex --cmd=runTradingBot --strategy=<strategy> --exch=<exchange> <coin_symbol> <timespan> <pips> <period> // <period> is only for EMA")
 		fmt.Println("")
 	} else {
 		fmt.Println("Status: OK'")

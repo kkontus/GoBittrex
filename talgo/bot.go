@@ -6,18 +6,11 @@ import (
 	gbtScheduler "GoBittrex/scheduler"
 )
 
-const (
-	S_FIBB  string = "fibb"
-	S_SMA   string = "sma"
-	S_EMA5  string = "ema5"
-	S_EMA20 string = "ema20"
-)
-
 func RunTradingBot(args interface{}) {
 	fmt.Println("Trading bot started")
 
 	switch v := args.(type) {
-	case Fibb:
+	case Fib:
 		runFibb(v)
 	case SMA:
 		runSma(v)
@@ -30,8 +23,8 @@ func RunTradingBot(args interface{}) {
 	fmt.Println("Trading bot stopped")
 }
 
-func runFibb(fibb Fibb) {
-	fn := TradeFibb(fibb)
+func runFibb(fib Fib) {
+	fn := TradeFib(fib)
 	startTrading(fn)
 }
 
@@ -45,13 +38,7 @@ func runEma(ema EMA) {
 		fmt.Println("Trading function should have replaced me")
 	}
 
-	if ema.Crossover == 5 {
-		fn = TradeEMA5(ema)
-		startTrading(fn)
-	} else if ema.Crossover == 20 {
-		fn = TradeEMA20(ema)
-	}
-
+	fn = TradeEMA(ema)
 	startTrading(fn)
 }
 

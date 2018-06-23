@@ -1,0 +1,12 @@
+package talgo
+
+const (
+	I_FIB       = "FIB"       // "FIBONACCI RETRACEMENT / EXTENSION"
+	I_SMA       = "SMA"       // "SIMPLE_MOVING_AVERAGE"
+	I_EMA       = "EMA"       // "EXPONENTIAL_MOVING_AVERAGE"
+	I_RSI       = "RSI"       // "RELATIVE_STRENGTH_INDEX"
+	I_STOCH_RSI = "STOCH_RSI" // "STOCHASTIC RSI"
+	I_PDM       = "PDM"       // "POSITIVE_DIRECTIONAL_MOVEMENT"
+	I_NDM       = "NDM"       // "NEGATIVE_DIRECTIONAL_MOVEMENT"
+	I_ADX       = "ADX"       // "AVERAGE_DIRECTIONAL_INDEX"
+)
