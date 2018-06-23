@@ -19,10 +19,21 @@ func SelectBittrexRoute(cmd string, args interface{}) bool {
 	case "getCurrencies":
 		getCurrencies()
 		status = true
+	case "getMarketSummaries":
+		getMarketSummaries()
+		status = true
+	case "getMarketSummary":
+		switch v := args.(type) {
+		case gbtValidator.GetMarketSummaryParams:
+			getMarketSummary(v.Coin)
+			status = true
+		default:
+			status = false
+		}
 	case "getTicks":
 		switch v := args.(type) {
 		case gbtValidator.GetTicksParams:
-			getTickes(v.Coin)
+			getTicks(v.Coin)
 			status = true
 		default:
 			status = false
@@ -71,7 +82,17 @@ func getCurrencies() {
 	gbtHttp.GetCurrencies(URL, gbtConfig.NONE)
 }
 
-func getTickes(coin string) {
+func getMarketSummaries() {
+	URL := fmt.Sprintf("%s/public/getmarketsummaries", gbtConfig.API_PATH)
+	gbtHttp.GetMarketSummaries(URL, gbtConfig.NONE)
+}
+
+func getMarketSummary(coin string) {
+	URL := fmt.Sprintf("%s/public/getmarketsummary?market=BTC-%s", gbtConfig.API_PATH, coin)
+	gbtHttp.GetMarketSummary(URL, gbtConfig.NONE)
+}
+
+func getTicks(coin string) {
 	//gbtHttp.GetData(gbtConfig.API_PATH_V2+"/pub/market/GetTicks?marketName=BTC-"+coin+"&tickInterval=day&_="+gbtUtil.FormatInt(gbtUtil.GetTimestamp()), false)
 	//URL := gbtConfig.API_PATH_V2 + "/pub/market/GetTicks?marketName=BTC-" + coin + "&tickInterval=day&_=" + gbtUtil.FormatInt(gbtUtil.GetTimestamp())
 	URL := fmt.Sprintf("%s/pub/market/GetTicks?marketName=BTC-%s&tickInterval=day&_=%s", gbtConfig.API_PATH_V2, coin, gbtUtil.FormatInt(gbtUtil.GetTimestamp()))

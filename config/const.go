@@ -31,9 +31,3 @@ const (
 	CRYPTO_API_PORT           = "8080"
 	DEFAULT_CURRENCY          = "USD"
 )
-
-var RoutesBittrex = []string{"getMarkets", "getCurrencies", "getTicks", "getOpenOrders", "getOrderBook", "startTrailing"}
-var RoutesCmc = []string{"getCoinInfo", "getCoinsInfo"}
-var RoutesCmcal = []string{"getCmcalCoins", "getCmcalCategories", "getCmcalEvents"}
-var RoutesFirebase = []string{"sendPush", "startRealtimeDatabase"}
-var RoutesGeneral = []string{"runServer", "runTradingBot"}

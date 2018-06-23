@@ -12,6 +12,8 @@ $ go get firebase.google.com/go
 $ go build
 $ ./GoBittrex --cmd=getMarkets
 $ ./GoBittrex --cmd=getCurrencies
+$ ./GoBittrex --cmd=getMarketSummaries
+$ ./GoBittrex --cmd=getMarketSummary <coin_symbol>
 $ ./GoBittrex --cmd=getTicks <coin_symbol>
 $ ./GoBittrex --cmd=getOpenOrders <coin_symbol>
 $ ./GoBittrex --cmd=getOrderBook <coin_symbol>

@@ -70,6 +70,8 @@ func pingRoutesBittrex(cmd string) {
 		fmt.Println("")
 		fmt.Println("./GoBittrex --cmd=getMarkets")
 		fmt.Println("./GoBittrex --cmd=geCurrencies")
+		fmt.Println("./GoBittrex --cmd=getMarketSummaries")
+		fmt.Println("./GoBittrex --cmd=getMarketSummary <coin_symbol>")
 		fmt.Println("./GoBittrex --cmd=getTicks <coin_symbol>")
 		fmt.Println("./GoBittrex --cmd=getOpenOrders <coin_symbol>")
 		fmt.Println("./GoBittrex --cmd=startTrailing <coin_symbol> SL <sell_loss> TP <take_profit> TTP <trailing_take_profit>")

@@ -14,6 +14,10 @@ func ValidateParams(cmd string, args []string) (command string, params interface
 		return validateGetMarketsParams(cmd, args)
 	case "getCurrencies":
 		return validateGetCurrenciesParams(cmd, args)
+	case "getMarketSummaries":
+		return validateGetMarketSummariesParams(cmd, args)
+	case "getMarketSummary":
+		return validateGetMarketSummaryParams(cmd, args)
 	case "getTicks":
 		return validateGetTicksParams(cmd, args)
 	case "getOpenOrders":
@@ -57,6 +61,23 @@ func validateGetMarketsParams(cmd string, args []string) (command string, params
 func validateGetCurrenciesParams(cmd string, args []string) (command string, params interface{}, err error) {
 	if len(args) == 0 {
 		return cmd, nil, nil
+	} else {
+		return cmd, nil, errors.New(fmt.Sprintf("%s unsupported parameters", cmd))
+	}
+}
+
+func validateGetMarketSummariesParams(cmd string, args []string) (command string, params interface{}, err error) {
+	if len(args) == 0 {
+		return cmd, nil, nil
+	} else {
+		return cmd, nil, errors.New(fmt.Sprintf("%s unsupported parameters", cmd))
+	}
+}
+
+func validateGetMarketSummaryParams(cmd string, args []string) (command string, params interface{}, err error) {
+	if len(args) == 1 {
+		s := GetMarketSummaryParams{Coin: args[0]}
+		return cmd, s, nil
 	} else {
 		return cmd, nil, errors.New(fmt.Sprintf("%s unsupported parameters", cmd))
 	}

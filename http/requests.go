@@ -78,6 +78,42 @@ func GetCurrencies(url string, authRequired AuthType) {
 }
 
 // BITTREX
+func GetMarketSummaries(url string, authRequired AuthType) {
+	err, decoder, resp := jsonDecode(url, authRequired)
+	defer resp.Body.Close()
+
+	responseData := gbtBittrex.MarketSummariesResponse{} // or var responseData = gbtEntity.MarketSummariesResponse{}
+	err = decoder.Decode(&responseData)
+	if err != nil {
+		gbtError.ShowError(err)
+	} else {
+		//fmt.Printf("Result: %v\n", responseData.Result)
+		result := responseData.Result
+		for i, elem := range result {
+			fmt.Printf("%d: %s %s\n", i, elem.MarketName, elem.MarketName)
+		}
+	}
+}
+
+// BITTREX
+func GetMarketSummary(url string, authRequired AuthType) {
+	err, decoder, resp := jsonDecode(url, authRequired)
+	defer resp.Body.Close()
+
+	responseData := gbtBittrex.MarketSummaryResponse{} // or var responseData = gbtEntity.MarketSummaryResponse{}
+	err = decoder.Decode(&responseData)
+	if err != nil {
+		gbtError.ShowError(err)
+	} else {
+		//fmt.Printf("Result: %v\n", responseData.Result)
+		result := responseData.Result
+		for i, elem := range result {
+			fmt.Printf("%d: %s %s\n", i, elem.MarketName, elem.MarketName)
+		}
+	}
+}
+
+// BITTREX
 func GetTicks(url string, authRequired AuthType) {
 	err, decoder, resp := jsonDecode(url, authRequired)
 	defer resp.Body.Close()
